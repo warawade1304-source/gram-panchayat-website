@@ -172,18 +172,22 @@ document.getElementById("complaintForm").addEventListener("submit", function(e){
         body: formData
     })
     .then(res => res.text())
-    .then(response => {
+    .then(data => {
         document.getElementById("msg").innerHTML =
             "<span class='success'>✅ तक्रार यशस्वीपणे नोंद झाली</span>";
-        document.getElementById("complaintForm").reset();
+        this.reset();
+        console.log(data);
     })
     .catch(err => {
         document.getElementById("msg").innerHTML =
             "<span class='error'>❌ तक्रार नोंद करताना अडचण आली</span>";
+        console.error(err);
     });
 });
 </script>
 
+
 </body>
 </html>
+
 
