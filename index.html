@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ग्रामपंचायत - वरवडे</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f4f6f8;
+}
+
+/* Header */
+.top-header{
+    text-align:center;
+    padding:20px;
+    font-size:26px;
+    font-weight:bold;
+    color:#000;
+    background: linear-gradient(to right,#ff9933,#ffffff,#138808);
+}
+
+/* Menu */
+.menu{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    background:#003f7f;
+}
+.menu a{
+    color:white;
+    padding:12px 18px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.menu a:hover{
+    background:#002a55;
+}
+
+/* Scrolling News */
+.news-bar{
+    display:flex;
+    align-items:center;
+    background:#fff3cd;
+    border-top:2px solid #ff9800;
+    border-bottom:2px solid #ff9800;
+    padding:8px 10px;
+    font-weight:bold;
+}
+.news-title{
+    color:#d84315;
+    margin-right:10px;
+    white-space:nowrap;
+}
+
+/* Content */
+.container{
+    max-width:1100px;
+    margin:20px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+h2{
+    color:#003f7f;
+    margin-top:0;
+}
+
+/* 6 Section Grid */
+.section-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:20px;
+    margin-top:20px;
+}
+
+.section-box{
+    background:#f8f9ff;
+    padding:18px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.08);
+}
+
+.section-box h3{
+    margin-top:0;
+    color:#003f7f;
+    font-size:18px;
+    border-bottom:2px solid #003f7f;
+    padding-bottom:6px;
+}
+
+.section-box ul{
+    padding-left:18px;
+    margin:8px 0 0 0;
+}
+
+.section-box p{
+    line-height:1.6;
+}
+
+/* Responsive */
+@media(max-width:900px){
+    .section-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media(max-width:600px){
+    .section-grid{
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="top-header">🌾 ग्रामपंचायत वरवडे</div>
+
+<!-- Menu -->
+<div class="menu">
+    <a href="index.html">मुख्य पान</a>
+    <a href="panch-info.html">पंचायतीची माहिती</a>
+    <a href="documents.html">महत्वाचे दस्तऐवज</a>
+    <a href="notices.html">नोटीस बोर्ड</a>
+    <a href="gallery.html">फोटो गॅलरी</a>
+    <a href="tax.html">मालमत्ता कर</a>
+    <a href="contact.html">संपर्क</a>
+</div>
+
+<!-- Scrolling News -->
+<div class="news-bar">
+    <span class="news-title">📰 ताज्या सूचना :</span>
+    <marquee scrollamount="5" onmouseover="this.stop()" onmouseout="this.start()">
+        🏠 थकबाकी असलेल्या घरपट्टीवर 50% सवलत अंतिम तारीख 31/12/2025 |
+        📢 सर्व ग्रामस्थांनी आयुष्यमान भारत योजना चे कार्ड काढून घ्यावे. |
+        🧹 स्वच्छता मोहिमेत सहभागी व्हा
+    </marquee>
+</div>
+
+<!-- Content -->
+<div class="container">
+
+<h2>ग्रामपंचायत माहिती</h2>
+
+<div class="section-grid">
+
+    <div class="section-box">
+        <h3>🏘️ गावाची माहिती</h3>
+        <p>
+            वरवडे हे महाराष्ट्र राज्यातील सोलापूर जिल्ह्यातील
+            माढा तालुक्यात स्थित आहे. हे गाव प्रामुख्याने
+            शेतीप्रधान असून ग्रामस्थांचा मुख्य व्यवसाय
+            शेती व शेतीपूरक व्यवसाय आहे.
+        </p>
+    </div>
+
+    <div class="section-box">
+        <h3>🏛️ ग्रामपंचायतीची भूमिका</h3>
+        <ul>
+            <li>स्वच्छता व आरोग्य सुविधा</li>
+            <li>पाणीपुरवठा व्यवस्था</li>
+            <li>रस्ते, गटारी व दिवाबत्ती व्यवस्था</li>
+            <li>मालमत्ता कर व पाणीपट्टी वसुली</li>
+            <li>शासकीय योजना राबविणे</li>
+            <li>तक्रारी व सूचना नोंद</li>
+        </ul>
+    </div>
+
+    <div class="section-box">
+        <h3>🎯 ग्रामपंचायतीचे उद्दिष्ट</h3>
+        <ul>
+            <li>गावाचा सर्वांगीण विकास</li>
+            <li>स्वच्छ व सुंदर गाव</li>
+            <li>पारदर्शक सेवा</li>
+            <li>डिजिटल ग्रामपंचायत</li>
+        </ul>
+    </div>
+
+    <div class="section-box">
+        <h3>🏢 ग्रामपंचायत कार्यालय</h3>
+        <p>
+            ग्रामपंचायत कार्यालय,<br>
+            ग्रामपंचायत वरवडे,<br>
+            ता. माढा, जि. सोलापूर
+        </p>
+    </div>
+
+    <div class="section-box">
+        <h3>⏰ कार्यालयीन वेळ</h3>
+        <p>
+            सकाळी 10:00 ते सायं. 5:00<br>
+            <b>सुट्टी :</b> रविवार व शासकीय सुट्ट्या
+        </p>
+    </div>
+
+    <div class="section-box">
+        <h3>🤝 नागरिकांसाठी आवाहन</h3>
+        <p>
+            ग्रामपंचायत वरवडे नागरिकांनी कर वेळेवर भरावेत,
+            स्वच्छता राखावी व गावाच्या विकासासाठी
+            ग्रामपंचायतीस सहकार्य करावे.
+        </p>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

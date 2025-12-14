@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<title>संपर्क | ग्रामपंचायत</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+/* Header */
+.top-header{
+    text-align:center;
+    padding:20px;
+    font-size:26px;
+    font-weight:bold;
+    color:#fff;
+    background: linear-gradient(orange, white, green);
+}
+
+/* Menu */
+.menu{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    background:#003f7f;
+}
+.menu a{
+    color:white;
+    padding:12px 18px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.menu a:hover{
+    background:#002a55;
+}
+
+/* Container */
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+/* Section box */
+.box{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:25px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.box h2{
+    margin-top:0;
+    color:#003f7f;
+}
+
+/* Form */
+input, textarea, button{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+button{
+    background:#003f7f;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+button:hover{
+    background:#002a55;
+}
+
+/* Map */
+iframe{
+    width:100%;
+    height:300px;
+    border:0;
+}
+
+/* Message */
+#msg{
+    font-weight:bold;
+    margin-top:10px;
+}
+.success{color:green;}
+.error{color:red;}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="top-header">📞 संपर्क</div>
+
+<!-- Menu -->
+<div class="menu">
+    <a href="index.html">मुख्य पान</a>
+    <a href="panch-info.html">पंचायतीची माहिती</a>
+    <a href="documents.html">महत्वाचे दस्तऐवज</a>
+    <a href="notices.html">नोटीस बोर्ड</a>
+    <a href="gallery.html">फोटो गॅलरी</a>
+    <a href="tax.html">मालमत्ता कर</a>
+    <a href="contact.html">संपर्क</a>
+</div>
+
+<div class="container">
+
+    <!-- Contact Details -->
+    <div class="box">
+        <h2>📌 संपर्क तपशील</h2>
+        <p><b>ग्रामपंचायत नाव:</b> वरवडे </p>
+        <p><b>तालुका:</b> माढा </p>
+        <p><b>जिल्हा:</b> सोलापूर </p>
+        <p><b>फोन:</b> 9404694111 </p>
+        <p><b>ई-मेल:</b> warawade1304@gmail.com</p>
+    </div>
+
+   <!-- Google Map -->
+<div class="box">
+    <h2>🗺️ Google Map Location</h2>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d948.7979238335566!2d75.31305839102048!3d17.969816287212648!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc4699215530297%3A0xfcf07f2380c95318!2z4KSX4KWN4KSw4KS-4KSu4KSq4KSC4KSa4KS-4KSv4KSkIOCkleCkvuCksOCljeCkr-CkvuCksuCkryzgpLXgpLDgpLXgpKHgpYcg4KSk4KS-LuCkruCkvuCkouCkvg!5e0!3m2!1sen!2sin!4v1765719032418!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        
+</div>
+
+
+    <!-- Complaint Form -->
+    <div class="box">
+        <h2>✍️ तक्रार / सूचना नोंद</h2>
+
+        <form id="complaintForm">
+            <label>नाव</label>
+            <input type="text" name="name" required>
+
+            <label>मोबाईल नंबर</label>
+            <input type="text" name="mobile" required>
+
+            <label>तक्रारीचा विषय</label>
+            <input type="text" name="subject" required>
+
+            <label>तक्रार / सूचना</label>
+            <textarea name="message" rows="4" required></textarea>
+
+            <button type="submit">तक्रार सबमिट करा</button>
+        </form>
+
+        <div id="msg"></div>
+    </div>
+
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzQvcUo-d_hrGQcKChBt-ZdxjM7p8NQChlItHMPlEsJVulsLps6su_7BxMjIjD5XjVkVA/exec";
+
+document.getElementById("complaintForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch(API_URL, {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(response => {
+        document.getElementById("msg").innerHTML =
+            "<span class='success'>✅ तक्रार यशस्वीपणे नोंद झाली</span>";
+        document.getElementById("complaintForm").reset();
+    })
+    .catch(err => {
+        document.getElementById("msg").innerHTML =
+            "<span class='error'>❌ तक्रार नोंद करताना अडचण आली</span>";
+    });
+});
+</script>
+
+</body>
+</html>

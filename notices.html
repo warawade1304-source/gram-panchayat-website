@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>नोटीस बोर्ड | ग्रामपंचायत वरवडे</title>
+<style>
+body {
+    margin:0;
+    font-family: Arial,sans-serif;
+    background:#f4f6f8;
+}
+.top-header {
+    text-align:center;
+    padding:20px;
+    font-size:26px;
+    font-weight:bold;
+    background: linear-gradient(to right,#ff9933,#ffffff,#138808);
+    color:#000;
+}
+.menu {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    background:#003f7f;
+}
+.menu a {
+    color:#fff;
+    padding:12px 16px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.menu a:hover {
+    background:#002a55;
+}
+.news-bar {
+    display:flex;
+    align-items:center;
+    background:#fff3cd;
+    border-top:2px solid #ff9800;
+    border-bottom:2px solid #ff9800;
+    padding:8px 10px;
+    font-weight:bold;
+}
+.news-title {
+    color:#d84315;
+    margin-right:10px;
+    white-space:nowrap;
+}
+.container {
+    max-width:1000px;
+    margin:20px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.notice-card {
+    border:1px solid #ccc;
+    border-left:5px solid #003f7f;
+    margin-bottom:15px;
+    padding:12px 15px;
+    background:#fafafa;
+    border-radius:5px;
+}
+.notice-card h3 {
+    margin:0 0 5px 0;
+    color:#003f7f;
+}
+.notice-card p {
+    margin:0;
+    font-size:15px;
+}
+.notice-date {
+    font-size:13px;
+    color:#555;
+    margin-bottom:5px;
+}
+</style>
+</head>
+<body>
+
+<div class="top-header">🌾 ग्रामपंचायत वरवडे – नोटीस बोर्ड</div>
+
+<div class="menu">
+    <a href="index.html">मुख्य पान</a>
+    <a href="panch-info.html">पंचायतीची माहिती</a>
+    <a href="documents.html">महत्वाचे दस्तऐवज</a>
+    <a href="notices.html">नोटीस बोर्ड</a>
+    <a href="gallery.html">फोटो गॅलरी</a>
+    <a href="tax.html">मालमत्ता कर</a>
+    <a href="contact.html">संपर्क</a>
+</div>
+
+<!-- Scrolling News -->
+<div class="news-bar">
+    <span class="news-title">📰 ताज्या सूचना :</span>
+    <marquee behavior="scroll" direction="left" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
+        🏠 मालमत्ता करावर 50% सवलत लागू कर भरण्याची अंतिम तारीख 31/12/2025 |  | 🧹 स्वच्छता मोहिमेत सर्व ग्रामस्थांनी सहभागी व्हावे
+    </marquee>
+</div>
+
+<div class="container">
+    <h2>सर्व नोटीसेस / सूचना</h2>
+
+    
+    <div class="notice-card">
+        <div class="notice-date">25/11/2025</div>
+        <h3>घरपट्टी अंतिम तारीख</h3>
+        <p>घरपट्टी भरण्याची अंतिम तारीख 31/12/2025 आहे. वेळेवर भरण्याची विनंती.</p>
+    </div>
+
+    <div class="notice-card">
+        <div class="notice-date">20/11/2025</div>
+        <h3>मालमत्ता कर सवलत</h3>
+        <p>मालमत्ता करावर 50% सवलत लागू आहे. सवलत फक्त 31/12/2025 पर्यंत.</p>
+    </div>
+
+    <div class="notice-card">
+        <div class="notice-date">15/11/2025</div>
+        <h3>स्वच्छता मोहिमेतील सहभागी</h3>
+        <p>सर्व ग्रामस्थांनी स्वच्छता मोहिमेत सहभागी होण्याची विनंती.</p>
+    </div>
+
+</div>
+</body>
+</html>
