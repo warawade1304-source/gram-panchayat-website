@@ -267,10 +267,96 @@ h2{
 </div>
 </div>
 
+<!-- CONTAINER -->
+<div style="max-width:1100px;margin:auto;padding:20px;">
+
+<h2 style="color:#003f7f;">🏛️ ग्रामपंचायत समिती माहिती</h2>
+
+<!-- FILTER -->
+<label><b>समिती निवडा :</b></label>
+<select id="committeeFilter" onchange="loadTable()" 
+style="padding:8px;width:100%;max-width:300px;margin:10px 0;">
+    <option value="all">सर्व समित्या</option>
+    <option value="आरोग्य समिती">आरोग्य समिती</option>
+    <option value="शिक्षण समिती">शिक्षण समिती</option>
+    <option value="पाणीपुरवठा समिती">पाणीपुरवठा समिती</option>
+    <option value="स्वच्छता समिती">स्वच्छता समिती</option>
+</select>
+
+<!-- TABLE -->
+<div style="overflow-x:auto;">
+<table border="1" width="100%" cellpadding="8" cellspacing="0"
+style="border-collapse:collapse;background:#fff;margin-top:15px;">
+
+<thead style="background:#003f7f;color:#fff;">
+<tr>
+<th>समिती</th>
+<th>नाव</th>
+<th>पद</th>
+<th>मोबाईल</th>
+<th>WhatsApp</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
 </div>
 
 </div>
+
+<script>
+const members = [
+  {committee:"आरोग्य समिती", name:"रामराव पाटील", post:"अध्यक्ष", mobile:"9876543210"},
+  {committee:"आरोग्य समिती", name:"सुनिता पाटील", post:"सदस्या", mobile:"9123456780"},
+  {committee:"शिक्षण समिती", name:"शिवाजी गायकवाड", post:"अध्यक्ष", mobile:"9012345678"},
+  {committee:"शिक्षण समिती", name:"लता गायकवाड", post:"सदस्या", mobile:"9898989898"},
+  {committee:"पाणीपुरवठा समिती", name:"मधुकर जाधव", post:"अध्यक्ष", mobile:"9090909090"},
+  {committee:"पाणीपुरवठा समिती", name:"संदीप जाधव", post:"सदस्य", mobile:"8888888888"},
+  {committee:"स्वच्छता समिती", name:"कल्पना शिंदे", post:"अध्यक्ष", mobile:"7777777777"},
+  {committee:"स्वच्छता समिती", name:"प्रशांत शिंदे", post:"सदस्य", mobile:"6666666666"}
+];
+
+function loadTable(){
+    const filter = document.getElementById("committeeFilter").value;
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+
+    const filtered = filter==="all" ? members :
+        members.filter(m => m.committee === filter);
+
+    if(filtered.length === 0){
+        tbody.innerHTML = "<tr><td colspan='5' align='center'>माहिती उपलब्ध नाही</td></tr>";
+        return;
+    }
+
+    filtered.forEach(m => {
+        tbody.innerHTML += `
+        <tr>
+            <td>${m.committee}</td>
+            <td>${m.name}</td>
+            <td>${m.post}</td>
+            <td>
+                <a href="tel:${m.mobile}" style="color:green;font-weight:bold;">
+                    📞 ${m.mobile}
+                </a>
+            </td>
+            <td>
+                <a href="https://wa.me/91${m.mobile}" target="_blank"
+                style="color:#25D366;font-weight:bold;">
+                    💬 WhatsApp
+                </a>
+            </td>
+        </tr>
+        `;
+    });
+}
+
+loadTable();
+</script>
+
 
 </body>
 </html>
+
 
