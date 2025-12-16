@@ -3,59 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>मालमत्ता कर बिल</title>
-
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<title>मालमत्ता कर बिल | ग्रामपंचायत</title>
 
 <style>
-body{font-family:Arial,sans-serif;background:#f3f7ff;margin:0;padding:0;}
-.top-header{background:linear-gradient(90deg,#FF9933,#FFFFFF,#128807);color:#000;padding:18px;text-align:center;font-weight:bold;font-size:28px;border-bottom:4px solid #003f7f;}
-.menu{background:#003f7f;padding:12px;text-align:center;}
-.menu a{color:white;margin:0 12px;text-decoration:none;font-weight:bold;}
+body{font-family:Arial;background:#f3f7ff;margin:0}
 
-.search-box{text-align:center;margin:20px;}
-.search-box input{width:70%;padding:12px;font-size:18px;border-radius:8px;border:2px solid #003f7f;}
-
-.bill-box{max-width:900px;margin:20px auto;padding:15px;border:1px solid #ccc;background:#fff;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-
-.table{width:100%;border-collapse:collapse;margin-top:10px;}
-.table th,.table td{border:1px solid #003f7f;padding:6px;text-align:center;}
-.table th{background:#003f7f;color:white;font-weight:bold;}
-
-.qr-box{display:flex;justify-content:center;gap:80px;margin-top:25px;flex-wrap:wrap;}
-.qr-box img{width:180px;}
-.qr-box div{text-align:center;}
-
-@media(max-width:768px){
-    .qr-box{flex-direction:column;gap:20px;}
-    .qr-box img{width:220px;}
-}
-
-.download-btn{text-align:center;margin:20px;}
-.download-btn button{padding:12px 25px;font-size:16px;background:#ff9933;border:none;border-radius:8px;cursor:pointer;}
-
-/* Summary box - table font size */
-.summary-box{
-    margin-top:15px;
-    padding:10px;
-    border:2px dashed #ff6600;
-    background:#fff4e6;
-    border-radius:6px;
-    font-size:16px;      /* बिल सारखा font size */
-    font-weight:bold;    /* bold */
-    color:#000000;       /* orange color */
+/* Header */
+.top-header{
+    background:linear-gradient(90deg,#FF9933,#ffffff,#128807);
+    padding:18px;
+    font-size:26px;
+    font-weight:bold;
     text-align:center;
 }
-.summary-box p{
-    margin:5px 0;
-    font-size:16px;      /* बिल सारखा font size */
+
+/* Menu */
+.menu{
+    background:#003f7f;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
 }
+.menu a{
+    color:white;
+    padding:12px 16px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.menu a:hover{
+    background:#002a55;
+}
+
+/* Search */
+.search-box{text-align:center;margin:20px}
+.search-box input{
+    width:70%;
+    padding:12px;
+    font-size:18px;
+    border-radius:8px;
+    border:2px solid #003f7f;
+}
+
+/* Bill */
+.bill-box{
+    max-width:900px;
+    margin:20px auto;
+    background:#fff;
+    padding:15px;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,.15)
+}
+
+.table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px
+}
+.table th,.table td{
+    border:1px solid #003f7f;
+    padding:6px;
+    text-align:center
+}
+.table th{
+    background:#003f7f;
+    color:#fff
+}
+
+.summary-box{
+    margin-top:15px;
+    padding:12px;
+    border:2px dashed #ff6600;
+    background:#fff4e6;
+    font-weight:bold;
+    text-align:center
+}
+
+/* QR */
+.qr-box{
+    display:flex;
+    justify-content:center;
+    gap:80px;
+    margin-top:25px;
+    flex-wrap:wrap
+}
+.qr-box img{width:170px}
+.qr-box div{text-align:center}
 </style>
 </head>
+
 <body>
 
-<div class="top-header">💰 मालमत्ता कर माहिती</div>
+<!-- Header -->
+<div class="top-header">💰 ग्रामपंचायत मालमत्ता कर माहिती</div>
 
+<!-- Menu -->
 <div class="menu">
     <a href="index.html">मुख्य पान</a>
     <a href="panch-info.html">पंचायतीची माहिती</a>
@@ -66,14 +107,16 @@ body{font-family:Arial,sans-serif;background:#f3f7ff;margin:0;padding:0;}
     <a href="contact.html">संपर्क</a>
 </div>
 
+<!-- Search -->
 <div class="search-box">
-    <input type="text" id="searchInput" placeholder="नाव किंवा घर क्रमांक टाका..." onkeyup="doSearch()">
+    <input type="text" id="searchInput"
+    placeholder="नाव किंवा घर क्रमांक टाका..."
+    onkeyup="doSearch()">
 </div>
 
 <div id="result"></div>
 
 <script>
-// JSON data
 let data=[
 
  {
@@ -18201,85 +18244,70 @@ let data=[
 ];
 
 function doSearch(){
-    const text=document.getElementById("searchInput").value.toLowerCase();
-    const matches=data.filter(r=>r["मिळकत धारकाचे नाव"].toLowerCase().includes(text) || r["मिळकत नंबर"].includes(text));
+let t=document.getElementById("searchInput").value;
+let out="";
 
-    let html="";
-    matches.forEach((record,index)=>{
+data.filter(r=>r["मिळकत धारकाचे नाव"].includes(t)||r["मिळकत नंबर"].includes(t))
+.forEach(r=>{
 
-        const prevTotal = Number(record["मागील घरपट्टी कर"]) + Number(record["मागील दिवाबत्ती कर"]) + Number(record["मागील आरोग्य कर"]) + Number(record["मागील पडसर जमीन"]);
-        const discount = prevTotal * 0.5;
-        const currentTotal = Number(record["चालू घरपट्टी कर"]) + Number(record["चालू दिवाबत्ती कर"]) + Number(record["चालू आरोग्य कर"]) + Number(record["चालू पडसर जमीन"]);
-        const payAmount = discount + currentTotal;
-        const paniTotal = Number(record["एकूण पाणीपट्टी कर"]);
+let ph=+r["मागील घरपट्टी कर"], ch=+r["चालू घरपट्टी कर"];
+let pl=+r["मागील दिवाबत्ती कर"], cl=+r["चालू दिवाबत्ती कर"];
+let pa=+r["मागील आरोग्य कर"], ca=+r["चालू आरोग्य कर"];
+let pw=+r["मागील पाणीपट्टी कर"], cw=+r["चालू पाणीपट्टी कर"];
+let pp=+r["मागील पडसर जमीन"], cp=+r["चालू पडसर जमीन"];
 
-        html+=`
-<div class="bill-box" id="billArea_${index}">
+let prevTotal=ph+pl+pa+pp+pw;
+let currTotal=ch+cl+ca+cp+cw;
 
+let gharQR=( (ph+pl+pa+pp)*0.5 ) + (ch+cl+ca+cp);
+let paniQR=(pw*0.5)+cw;
+
+out+=`
+<div class="bill-box">
 <h3 style="text-align:center;">नमुना 9(क) – कर बिल</h3>
 
-<p><b>नाव:</b> ${record["मिळकत धारकाचे नाव"]}</p>
-<p><b>घर क्रमांक:</b> ${record["मिळकत नंबर"]}</p>
+<p><b>नाव:</b> ${r["मिळकत धारकाचे नाव"]}</p>
+<p><b>घर क्रमांक:</b> ${r["मिळकत नंबर"]}</p>
 
 <table class="table">
 <tr><th>क्र</th><th>कर</th><th>थकबाकी</th><th>चालू</th><th>एकूण</th></tr>
-<tr><td>1</td><td>घरपट्टी</td><td>${record["मागील घरपट्टी कर"]}</td><td>${record["चालू घरपट्टी कर"]}</td><td>${record["एकूण घरपट्टी कर"]}</td></tr>
-<tr><td>2</td><td>दिवाबत्ती</td><td>${record["मागील दिवाबत्ती कर"]}</td><td>${record["चालू दिवाबत्ती कर"]}</td><td>${record["एकूण दिवाबत्ती कर"]}</td></tr>
-<tr><td>3</td><td>आरोग्य</td><td>${record["मागील आरोग्य कर"]}</td><td>${record["चालू आरोग्य कर"]}</td><td>${record["एकूण आरोग्य कर"]}</td></tr>
-<tr><td>4</td><td>पाणीपट्टी</td><td>${record["मागील पाणीपट्टी कर"]}</td><td>${record["चालू पाणीपट्टी कर"]}</td><td>${record["एकूण पाणीपट्टी कर"]}</td></tr>
-<tr><td>5</td><td>पडसर</td><td>${record["मागील पडसर जमीन"]}</td><td>${record["चालू पडसर जमीन"]}</td><td>${record["एकूण पडसर जमीन"]}</td></tr>
-<tr style="font-weight:bold;">
+<tr><td>1</td><td>घरपट्टी</td><td>${ph}</td><td>${ch}</td><td>${ph+ch}</td></tr>
+<tr><td>2</td><td>दिवाबत्ती</td><td>${pl}</td><td>${cl}</td><td>${pl+cl}</td></tr>
+<tr><td>3</td><td>आरोग्य</td><td>${pa}</td><td>${ca}</td><td>${pa+ca}</td></tr>
+<tr><td>4</td><td>पाणीपट्टी</td><td>${pw}</td><td>${cw}</td><td>${pw+cw}</td></tr>
+<tr><td>5</td><td>पडसर</td><td>${pp}</td><td>${cp}</td><td>${pp+cp}</td></tr>
+<tr style="font-weight:bold">
 <td colspan="2">एकूण</td>
-<td>${record["V"]}</td>
-<td>${record["चालू एकूण मागणी"]}</td>
-<td>${record["एकूण मागणी"]}</td>
+<td>${prevTotal}</td>
+<td>${currTotal}</td>
+<td>${prevTotal+currTotal}</td>
 </tr>
 </table>
 
-<!-- Summary Box -->
 <div class="summary-box">
-<p>एकूण थकबाकी रक्कम: ₹ ${prevTotal.toLocaleString("en-IN")}</p>
-<p>एकूण सवलत (50%): ₹ ${discount.toLocaleString("en-IN")}</p>
-<p>भरावयाची रक्कम: ₹ ${payAmount.toLocaleString("en-IN")}</p>
-<p>मुख्यमंत्री समृद्ध पंचायतराज अभियान अंतर्गत थकबाकी मध्ये ५० % सवलत देण्यात येत आहे. सदरील सवलत ३१/१२/२०२५ पर्यंत चालू राहील.</p>
+<p>एकूण थकबाकी: ₹ ${prevTotal}</p>
+<p>50% सवलत: ₹ ${prevTotal*0.5}</p>
+<p>भरायची रक्कम: ₹ ${(prevTotal*0.5)+currTotal}</p>
 </div>
 
-<!-- QR Box -->
 <div class="qr-box">
 <div>
-<h4>🏡 घरपट्टी QR</h4>
+<h4>🏠 घरपट्टी QR</h4>
 <img src="images/gharqr.png">
-<p> ₹ ${payAmount.toLocaleString("en-IN")}</p>
+<p>₹ ${gharQR}</p>
 </div>
-
 <div>
 <h4>💧 पाणीपट्टी QR</h4>
 <img src="images/paniqr.png">
-<p>₹ ${paniTotal.toLocaleString("en-IN")}</p>
+<p>₹ ${paniQR}</p>
 </div>
 </div>
-
-
-
 </div>`;
-    });
+});
 
-    document.getElementById("result").innerHTML = html || "<p style='text-align:center'>डेटा सापडला नाही</p>";
-}
-
-// Download function
-function downloadBillJPG(billId){
-    const bill=document.getElementById(billId);
-    html2canvas(bill,{scale:2,useCORS:true}).then(canvas=>{
-        const link=document.createElement("a");
-        link.href=canvas.toDataURL("image/jpeg",0.95);
-        link.download="Grampanchayat_Bill.jpg";
-        link.click();
-    });
+document.getElementById("result").innerHTML=out||"डेटा सापडला नाही";
 }
 </script>
 
 </body>
 </html>
-
-
