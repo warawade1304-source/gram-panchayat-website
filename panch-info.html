@@ -308,10 +308,12 @@ h2{
 <select id="committeeFilter" onchange="loadTable()" 
 style="padding:8px;width:100%;max-width:300px;margin:10px 0;">
     <option value="all">सर्व समित्या</option>
-    <option value="आरोग्य समिती">आरोग्य समिती</option>
-    <option value="शिक्षण समिती">शिक्षण समिती</option>
-    <option value="पाणीपुरवठा समिती">पाणीपुरवठा समिती</option>
-    <option value="स्वच्छता समिती">स्वच्छता समिती</option>
+    <option value="ग्राम आरोग्य पोषण समिती">ग्राम आरोग्य पोषण समिती</option>
+    <option value="पाणी पुरवठा व स्वच्छता समिती">पाणी पुरवठा व स्वच्छता समिती</option>
+    <option value="कृषि विकास समिती">कृषि विकास समिती</option>
+    <option value="शाळा व्यवस्थापन समिती">शाळा व्यवस्थापन समिती</option>
+     <option value="बाल हक्क सरंक्षण समिती">बाल हक्क सरंक्षण समिती</option>
+     <option value="जैव विविधता समिती">जैव विविधता समिती</option>
 </select>
 
 <!-- TABLE -->
@@ -338,14 +340,18 @@ style="border-collapse:collapse;background:#fff;margin-top:15px;">
 
 <script>
 const members = [
-  {committee:"आरोग्य समिती", name:"", post:"अध्यक्ष", mobile:""},
-  {committee:"आरोग्य समिती", name:"", post:"सदस्या", mobile:""},
-  {committee:"शिक्षण समिती", name:"", post:"अध्यक्ष", mobile:""},
-  {committee:"शिक्षण समिती", name:"", post:"सदस्या", mobile:""},
-  {committee:"पाणीपुरवठा समिती", name:"", post:"अध्यक्ष", mobile:""},
-  {committee:"पाणीपुरवठा समिती", name:"", post:"सदस्य", mobile:""},
-  {committee:"स्वच्छता समिती", name:"", post:"अध्यक्ष", mobile:""},
-  {committee:"स्वच्छता समिती", name:"", post:"सदस्य", mobile:""}
+  {committee:"ग्राम आरोग्य पोषण समिती", name:"", post:"अध्यक्ष", mobile:""},
+  {committee:"ग्राम आरोग्य पोषण समिती", name:"", post:"सदस्या", mobile:""},
+  {committee:"पाणी पुरवठा व स्वच्छता समिती", name:"", post:"अध्यक्ष", mobile:""},
+  {committee:"पाणी पुरवठा व स्वच्छता समिती", name:"", post:"सदस्या", mobile:""},
+  {committee:"कृषि विकास समिती", name:"", post:"अध्यक्ष", mobile:""},
+  {committee:"कृषि विकास समिती", name:"", post:"सदस्य", mobile:""},
+  {committee:"शाळा व्यवस्थापन समिती", name:"", post:"अध्यक्ष", mobile:""},
+  {committee:"शाळा व्यवस्थापन समिती", name:"", post:"सदस्य", mobile:""},
+    {committee:"बाल हक्क सरंक्षण समितीी", name:"", post:"अध्यक्ष", mobile:""},
+  {committee:"बाल हक्क सरंक्षण समितीी", name:"", post:"सदस्य", mobile:""},
+    {committee:"जैव विविधता समिती", name:"", post:"अध्यक्ष", mobile:""},
+  {committee:"जैव विविधता समिती", name:"", post:"सदस्य", mobile:""}
 ];
 
 function loadTable(){
@@ -389,6 +395,7 @@ loadTable();
 
 </body>
 </html>
+
 
 
 
