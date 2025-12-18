@@ -107,12 +107,31 @@ body{font-family:Arial;background:#f3f7ff;margin:0}
     <a href="contact.html">संपर्क</a>
 </div>
 
-<!-- Search -->
 <div class="search-box">
+  <div style="position:relative;display:inline-block;width:70%;">
+    
     <input type="text" id="searchInput"
-    placeholder="नाव किंवा घर क्रमांक टाका..."
-    onkeyup="doSearch()">
+     placeholder="नाव किंवा घर क्रमांक टाका..."
+     onclick="showDropdown()"
+     onkeyup="filterDropdown()"
+     style="width:100%;">
+
+    <select id="nameDropdown" size="6"
+     onchange="selectName()"
+     style="
+       position:absolute;
+       top:100%;
+       left:0;
+       width:100%;
+       margin-top:2px;
+       display:none;
+       z-index:99;
+     ">
+    </select>
+
+  </div>
 </div>
+
 
 <div id="result"></div>
 
@@ -18243,11 +18262,66 @@ let data=[
  }
 ];
 
+/* 🔽 Dropdown fill – page load ला */
+window.onload = () => {
+  let dd = document.getElementById("nameDropdown");
+  data
+   .sort((a,b)=>
+     a["मिळकत धारकाचे नाव"]
+     .localeCompare(b["मिळकत धारकाचे नाव"],'mr')
+   )
+   .forEach(r=>{
+     let o = document.createElement("option");
+     o.value = r["मिळकत नंबर"];
+     o.text  = r["मिळकत धारकाचे नाव"] +
+               " (घर नं. " + r["मिळकत नंबर"] + ")";
+     dd.appendChild(o);
+   });
+};
+
+/* dropdown show */
+function showDropdown(){
+  nameDropdown.style.display="block";
+}
+
+/* typing filter */
+function filterDropdown(){
+  let t = searchInput.value.trim();
+  nameDropdown.style.display = "block";
+
+  [...nameDropdown.options].forEach(o=>{
+    let text = o.text.trim();   // नाव + घर नं
+    let val  = o.value.trim();  // घर नं
+
+    if(t === ""){
+      o.style.display = "none";
+      return;
+    }
+
+    /* 🔢 number टाकला → exact match */
+    if(!isNaN(t)){
+      o.style.display = (val === t) ? "" : "none";
+    }
+    /* 👤 नाव टाकलं → partial match */
+    else{
+      o.style.display = text.includes(t) ? "" : "none";
+    }
+  });
+}
+
+
+/* dropdown select */
+function selectName(){
+  searchInput.value = nameDropdown.value;
+  nameDropdown.style.display="none";
+  doSearch(); // जुनी search function call
+}
+
 function doSearch(){
-let t=document.getElementById("searchInput").value;
+let t=document.getElementById("searchInput").value.trim();
 let out="";
 
-data.filter(r=>r["मिळकत धारकाचे नाव"].includes(t)||r["मिळकत नंबर"].includes(t))
+data.filter(r=>r["मिळकत धारकाचे नाव"].includes(t)||r["मिळकत नंबर"] === t)
 .forEach(r=>{
 
 let ph=+r["मागील घरपट्टी कर"], ch=+r["चालू घरपट्टी कर"];
@@ -18312,5 +18386,4 @@ document.getElementById("result").innerHTML=out||"डेटा सापडल�
 
 </body>
 </html>
-
 
