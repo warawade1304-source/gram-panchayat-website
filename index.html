@@ -159,6 +159,41 @@ h2{
     </marquee>
 </div>
 
+<!-- 🖼️ Gallery Auto Slideshow -->
+<div id="gallerySlider" style="
+max-width:1100px;
+margin:15px auto;
+position:relative;
+overflow:hidden;
+border-radius:12px;
+box-shadow:0 3px 8px rgba(0,0,0,0.2);
+background:#000;
+">
+
+  <img id="sliderImg" src="images/p1.png" style="
+  width:100%;
+  height:380px;
+  object-fit:cover;
+  display:block;
+  ">
+
+  <div id="sliderCaption" style="
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:10px;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  font-size:16px;
+  text-align:center;
+  font-weight:bold;
+  ">
+  तुळजा भवानी मंदिर
+  </div>
+
+</div>
+
 <!-- Content -->
 <div class="container">
 
@@ -227,6 +262,62 @@ h2{
 </div>
 
 </div>
+
+<!-- 🏗️ ग्राम पायाभूत सुविधा -->
+<div style="
+max-width:1100px;
+margin:30px auto;
+background:#ffffff;
+padding:25px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,0.12);
+">
+
+<h2 style="
+text-align:center;
+color:#003f7f;
+margin-top:0;
+margin-bottom:25px;
+">
+🏗️ ग्राम पायाभूत सुविधा
+</h2>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:15px;
+">
+
+<div style="background:#e3f2fd;padding:15px;border-radius:10px;">💧 सार्वजनिक पाणीपुरवठा विहीर : <b>2</b></div>
+<div style="background:#e8f5e9;padding:15px;border-radius:10px;">🚰 बोअरवेल हातपंप : <b>25</b></div>
+<div style="background:#fff3e0;padding:15px;border-radius:10px;">🛢️ पाण्याच्या टाक्या : <b>6</b></div>
+<div style="background:#fce4ec;padding:15px;border-radius:10px;">🚻 सार्वजनिक शौचालये : <b>2</b></div>
+<div style="background:#ede7f6;padding:15px;border-radius:10px;">🗑️ सार्वजनिक कचराकुंड्या : <b>24</b></div>
+<div style="background:#e0f2f1;padding:15px;border-radius:10px;">♻️ घनकचरा व्यवस्थापन प्रकल्प : <b>1</b></div>
+<div style="background:#fffde7;padding:15px;border-radius:10px;">💡 रस्त्यावरील पथदिवे : <b>21</b></div>
+
+<div style="background:#e3f2fd;padding:15px;border-radius:10px;">🏫 प्राथमिक शाळा : <b>3</b></div>
+<div style="background:#e8f5e9;padding:15px;border-radius:10px;">🏫 माध्यमिक शाळा : <b>2</b></div>
+<div style="background:#fff3e0;padding:15px;border-radius:10px;">🏫 उच्च माध्यमिक शाळा : <b>2</b></div>
+<div style="background:#fce4ec;padding:15px;border-radius:10px;">👶 अंगणवाडी : <b>5</b></div>
+<div style="background:#ede7f6;padding:15px;border-radius:10px;">🏢 सार्वजनिक इमारती : <b>10</b></div>
+
+<div style="background:#e0f2f1;padding:15px;border-radius:10px;">📍 जिल्हा मुख्यालय अंतर : <b>73 कि.मी.</b></div>
+<div style="background:#fffde7;padding:15px;border-radius:10px;">📍 तालुका मुख्यालय अंतर : <b>33 कि.मी.</b></div>
+
+<div style="background:#e3f2fd;padding:15px;border-radius:10px;">🚌 गावात बस सुविधा : <b>होय</b></div>
+<div style="background:#e8f5e9;padding:15px;border-radius:10px;">🏦 बँक सुविधा : <b>होय (सहकारी बँक)</b></div>
+<div style="background:#fff3e0;padding:15px;border-radius:10px;">🏥 आरोग्य केंद्र / उपकेंद्र : <b>होय</b></div>
+
+<div style="background:#fce4ec;padding:15px;border-radius:10px;">🏡 पर्यटकांसाठी होम स्टे : <b>नाही</b></div>
+<div style="background:#ede7f6;padding:15px;border-radius:10px;">🍽️ हॉटेल : <b>होय</b></div>
+
+<div style="background:#e0f2f1;padding:15px;border-radius:10px;">📚 वाचनालय : <b>नाही</b></div>
+<div style="background:#fffde7;padding:15px;border-radius:10px;">⚽ खेळाचे मैदान : <b>होय</b></div>
+
+</div>
+</div>
+
 <!-- Population Dashboard -->
 <div style="
 max-width:1100px;
@@ -373,10 +464,48 @@ color:#555;
 
   </div>
 </footer>
+<script>
+let galleryPhotos = [
+ {img:"images/p1.png", cap:"तुळजा भवानी मंदिर"},
+ {img:"images/p2.png", cap:"खंडोबा मंदिर"},
+ {img:"images/p3.png", cap:"खंडोबा मंदिर"},
+ {img:"images/p4.png", cap:"तुळजा भवानी मंदिर"},
+ {img:"images/p5.png", cap:"स्मशानभूमी"},
+ {img:"images/p6.png", cap:"पशुवैद्यकीय दवाखाना"},
+ {img:"images/p7.png", cap:"कै. भाई एस.एम.पाटील समाधीस्थळ"},
+ {img:"images/p8.png", cap:"खुली व्यायामशाळा"},
+ {img:"images/p9.png", cap:"जि.प. प्राथमिक शाळा"},
+ {img:"images/p10.png", cap:"स्वच्छतागृह"},
+ {img:"images/p11.png", cap:"श्रमदान"},
+ {img:"images/p12.png", cap:"कचराकुंडी"},
+ {img:"images/p13.png", cap:"सायकल वाटप"},
+ {img:"images/p14.png", cap:"डिजिटल शाळा"},
+ {img:"images/p15.png", cap:"किचन शेड"},
+ {img:"images/p16.png", cap:"सौर उर्जा पंप"},
+ {img:"images/p17.png", cap:"वृक्षारोपण"},
+ {img:"images/p18.png", cap:"वृक्षारोपण"},
+ {img:"images/p19.png", cap:"पावसाच्या पाण्याची साठवण"},
+ {img:"images/p20.png", cap:"शाळा पिण्याच्या पाण्याची सुविधा"}
+];
+
+let slideNo = 0;
+
+function startGallerySlider(){
+    let img = document.getElementById("sliderImg");
+    let cap = document.getElementById("sliderCaption");
+
+    slideNo++;
+    if(slideNo >= galleryPhotos.length){ slideNo = 0; }
+
+    img.src = galleryPhotos[slideNo].img;
+    cap.innerHTML = galleryPhotos[slideNo].cap;
+}
+
+setInterval(startGallerySlider, 3000); // 3 सेकंदांनी slide बदलेल
+</script>
 
 </body>
 </html>
-
 
 
 
