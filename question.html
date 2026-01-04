@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>प्रश्न तपशील | ग्रामपंचायत वरवडे</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+}
+
+/* HEADER */
+.top-header{
+  text-align:center;
+  padding:20px;
+  font-size:26px;
+  font-weight:bold;
+  background:linear-gradient(to right,#ff9933,#ffffff,#138808);
+}
+
+/* MENU */
+.menu{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  background:#003f7f;
+}
+.menu a{
+  color:#fff;
+  padding:12px 16px;
+  text-decoration:none;
+  font-weight:bold;
+}
+.menu a:hover{background:#002a55;}
+
+/* CONTENT */
+.container{
+  max-width:1000px;
+  margin:20px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+}
+h2{color:#003f7f;}
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;
+}
+.photo-grid img{
+  width:100%;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+/* BUTTON */
+.back-btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 16px;
+  background:#003f7f;
+  color:#fff;
+  text-decoration:none;
+  border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="top-header">🌾 ग्रामपंचायत वरवडे – प्रश्न तपशील</div>
+
+<!-- ===== ALL MENUS ===== -->
+<div class="menu">
+  <a href="index.html">मुख्य पान</a>
+  <a href="panch-info.html">पंचायतीची माहिती</a>
+  <a href="documents.html">शासकीय योजना</a>
+  <a href="notices.html">नोटीस बोर्ड</a>
+  <a href="question.html">प्रश्न सूची</a>
+  <a href="gallery.html">फोटो गॅलरी</a>
+  <a href="tax.html">मालमत्ता कर</a>
+  <a href="contact.html">संपर्क</a>
+</div>
+
+<!-- ===== CONTENT ===== -->
+<div class="container">
+  <h2 id="qTitle">लोड होत आहे...</h2>
+  <p id="qDetails"></p>
+
+  <h3>📸 पुरावे (Photos)</h3>
+  <div class="photo-grid" id="photos"></div>
+
+  <a href="questions.html" class="back-btn">⬅ सर्व प्रश्न</a>
+</div>
+
+<script>
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/1vbnp8-k6lBeRgC0r3QJD8lyjVKSZGwi1kmqRwDpWp-U/pub?output=csv";
+
+const params = new URLSearchParams(window.location.search);
+const qid = params.get("id");
+
+fetch(sheetURL)
+.then(r=>r.text())
+.then(csv=>{
+  let rows = csv.split("\n").slice(1);
+  rows.forEach(row=>{
+    let c = row.split(",");
+    if(c[0] === qid){
+      document.getElementById("qTitle").innerText = c[1];
+      document.getElementById("qDetails").innerText = c[2];
+
+      let box = document.getElementById("photos");
+      [c[3],c[4],c[5]].forEach(p=>{
+        if(p){
+          let img=document.createElement("img");
+          img.src=p.trim();
+          box.appendChild(img);
+        }
+      });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
