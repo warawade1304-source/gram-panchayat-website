@@ -112,17 +112,18 @@ function showQuestion(index){
     const container = document.getElementById("questionArea");
     container.innerHTML = `
       <div style="border:1px solid #ccc; padding:15px; border-radius:8px; background:#fafafa; margin-bottom:15px;">
-        <div><b>अ. क्र.:</b> ${q.qno}</div>
-        <div><b>कामाचे तपशील:</b> ${q.details}</div>
-        <div><b>कार्यवाहीचे स्वरूप:</b> ${q.work_type}</div>
-        <div><b>गुण:</b> ${q.marks}</div>
-        <div><b>उद्दीष्ट:</b> ${q.goal}</div>
-        <div><b>साध्य:</b> ${q.achieved}</div>
-        <div><b>प्राप्त %:</b> ${q.perc}</div>
-        ${q.photo1 ? `<div style="margin-top:10px;"><img src="${q.photo1}" style="max-width:100%; border-radius:8px;"></div>` : ""}
+        <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
+        <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
+        <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
+        <div><b>गुण:</b> ${q["गुण"]}</div>
+        <div><b>उद्दीष्ट:</b> ${q["उद्दीष्ट"]}</div>
+        <div><b>साध्य:</b> ${q["साध्य"]}</div>
+        <div><b>प्राप्त %:</b> ${q["प्राप्त %"]}</div>
+        ${q["photo1"] ? `<div style="margin-top:10px;"><img src="${q["photo1"]}" style="max-width:100%; border-radius:8px;"></div>` : ""}
       </div>
     `;
 }
+
 
 document.getElementById("prevBtn").onclick = () => {
     if(current>0){ current--; showQuestion(current); }
