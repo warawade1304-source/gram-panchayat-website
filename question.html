@@ -159,10 +159,11 @@ function showQuestion(index){
         <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
         <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
         <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
-        <div><b>गुण:</b> ${q["गुण"]}</div>
-        <div><b>उद्दीष्ट:</b> ${q["उद्दीष्ट"]}</div>
-        <div><b>साध्य:</b> ${q["साध्य"]}</div>
-        <div><b>प्राप्त %:</b> ${q["प्राप्त %"]}</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;">
+  <div style="flex:1; background:#d0e1ff; padding:8px; text-align:center; border-radius:6px;"><b>गुण</b><br>${q["गुण"]}</div>
+  <div style="flex:1; background:#dff5d0; padding:8px; text-align:center; border-radius:6px;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
+  <div style="flex:1; background:#fff1d0; padding:8px; text-align:center; border-radius:6px;"><b>साध्य</b><br>${q["साध्य"]}</div>
+  <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
         <div class="proofs">${photosHTML}</div>
       </div>
     `;
