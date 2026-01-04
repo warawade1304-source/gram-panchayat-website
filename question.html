@@ -47,15 +47,25 @@ body{
   background:#f9fafb;
   padding:15px;
   border-radius:8px;
-  margin-bottom:15px;
+  margin-bottom:20px;
 }
 .question-card div{
   margin:6px 0;
 }
 
+.total-marks{
+  background:#ffd966;
+  padding:12px;
+  border-radius:8px;
+  text-align:center;
+  font-weight:bold;
+  font-size:18px;
+  margin-bottom:12px;
+}
+
 .proofs img{
   width:100%;
-  max-width:150px;
+  max-width:280px;
   border-radius:8px;
   margin:5px;
   cursor:pointer;
@@ -80,31 +90,6 @@ button{
   cursor:pointer;
 }
 button:disabled{background:#999;}
-
-/* Lightbox Modal */
-#lightbox{
-  position:fixed;
-  display:none;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.8);
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-}
-#lightbox img{
-  max-width:90%;
-  max-height:90%;
-  border-radius:10px;
-}
-#lightbox span{
-  position:absolute;
-  top:20px;
-  right:30px;
-  font-size:40px;
-  color:#fff;
-  cursor:pointer;
-}
 </style>
 </head>
 
@@ -121,19 +106,11 @@ button:disabled{background:#999;}
 
 <div class="container">
   <h2>अभियान कार्यवाही</h2>
-  <div id="questionArea">
-    लोड होत आहे...
-  </div>
+  <div id="questionArea">लोड होत आहे...</div>
   <div class="nav-btns">
     <button id="prevBtn">Previous</button>
     <button id="nextBtn">Next</button>
   </div>
-</div>
-
-<!-- Lightbox Modal -->
-<div id="lightbox" onclick="closeLightbox()">
-  <span onclick="closeLightbox()">&times;</span>
-  <img id="lightboxImg" src="">
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -141,6 +118,7 @@ button:disabled{background:#999;}
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
 
 let questions = [];
+let totalMarks = ""; // G107 value
 let current = 0;
 
 function showQuestion(index){
@@ -148,23 +126,25 @@ function showQuestion(index){
     const container = document.getElementById("questionArea");
 
     let photosHTML = "";
-    for(let i=1; i<=5; i++){
+    for(let i=1;i<=5;i++){
         if(q[`photo${i}`]){
-            photosHTML += `<img src="${q[`photo${i}`]}" alt="photo${i}" onclick="openLightbox('${q[`photo${i}`]}')">`;
+            photosHTML += `<a href="${q[`photo${i}`]}" target="_blank"><img src="${q[`photo${i}`]}" alt="photo${i}"></a>`;
         }
     }
 
     container.innerHTML = `
+      <div class="total-marks">Total Marks: ${totalMarks}</div>
       <div class="question-card">
         <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
         <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
         <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
+
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;">
-  <div style="flex:1; background:#d0e1ff; padding:8px; text-align:center; border-radius:6px;"><b>गुण</b><br>${q["गुण"]}</div>
-  <div style="flex:1; background:#dff5d0; padding:8px; text-align:center; border-radius:6px;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
-  <div style="flex:1; background:#fff1d0; padding:8px; text-align:center; border-radius:6px;"><b>साध्य</b><br>${q["साध्य"]}</div>
-  <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
-          </div>
+          <div style="flex:1; background:#d0e1ff; padding:8px; text-align:center; border-radius:6px;"><b>गुण</b><br>${q["गुण"]}</div>
+          <div style="flex:1; background:#dff5d0; padding:8px; text-align:center; border-radius:6px;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
+          <div style="flex:1; background:#fff1d0; padding:8px; text-align:center; border-radius:6px;"><b>साध्य</b><br>${q["साध्य"]}</div>
+          <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
+        </div>
 
         <div class="proofs">${photosHTML}</div>
       </div>
@@ -174,25 +154,20 @@ function showQuestion(index){
     document.getElementById("nextBtn").disabled = (index === questions.length-1);
 }
 
-// navigation
 document.getElementById("prevBtn").onclick = () => { if(current>0){ current--; showQuestion(current); } };
 document.getElementById("nextBtn").onclick = () => { if(current<questions.length-1){ current++; showQuestion(current); } };
 
-// lightbox functions
-function openLightbox(src){
-    document.getElementById("lightboxImg").src = src;
-    document.getElementById("lightbox").style.display = "flex";
-}
-function closeLightbox(){
-    document.getElementById("lightbox").style.display = "none";
-}
-
-// load CSV
 Papa.parse(sheetURL, {
-    download: true,
-    header: true,
-    complete: function(results){
-        questions = results.data.filter(q=>q["अ. क्र."]);
+    download:true,
+    header:true,
+    complete:function(results){
+        questions = results.data.filter(q=>q["अ. क्र."]); 
+        // Total Marks from last row G107
+        if(results.data[106] && results.data[106]["प्राप्त %"]){
+            totalMarks = results.data[106]["प्राप्त %"]; // G107
+        } else {
+            totalMarks = "N/A";
+        }
         showQuestion(0);
     }
 });
