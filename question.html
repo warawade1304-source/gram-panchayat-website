@@ -60,6 +60,7 @@ body{
   max-width:280px;
   border-radius:8px;
   margin:5px;
+  cursor:pointer;
 }
 .nav-btns{
   display:flex;
@@ -110,6 +111,18 @@ let current = 0;
 function showQuestion(index){
     const q = questions[index];
     const container = document.getElementById("questionArea");
+    
+    // photo1 link
+    let photoHTML = "";
+    if(q["photo1"] && q["photo1"].trim() !== ""){
+        photoHTML = `
+        <div style="margin-top:10px;">
+          <a href="${q["photo1"].trim()}" target="_blank">
+            <img src="${q["photo1"].trim()}" style="max-width:100%; border-radius:8px;" alt="Photo">
+          </a>
+        </div>`;
+    }
+
     container.innerHTML = `
       <div style="border:1px solid #ccc; padding:15px; border-radius:8px; background:#fafafa; margin-bottom:15px;">
         <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
@@ -119,11 +132,10 @@ function showQuestion(index){
         <div><b>उद्दीष्ट:</b> ${q["उद्दीष्ट"]}</div>
         <div><b>साध्य:</b> ${q["साध्य"]}</div>
         <div><b>प्राप्त %:</b> ${q["प्राप्त %"]}</div>
-       ${q["photo1"] ? `<div style="margin-top:10px;"><img src="${q["photo1"]}" style="max-width:100%; border-radius:8px;"></div>` : ""}
+        ${photoHTML}
       </div>
     `;
 }
-
 
 document.getElementById("prevBtn").onclick = () => {
     if(current>0){ current--; showQuestion(current); }
