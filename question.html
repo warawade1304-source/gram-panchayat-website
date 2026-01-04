@@ -90,50 +90,55 @@ button:disabled{background:#999;}
 </div>
 
 <div class="container">
-  <div id="questionArea">लोड होत आहे...</div>
-
-  <div class="nav-btns">
-    <button id="prevBtn">⬅ मागील</button>
-    <button id="nextBtn">पुढील ➡</button>
+  <h2>अभियान कार्यवाही</h2>
+  <div id="questionArea">
+    लोड होत आहे...
+  </div>
+  <div style="text-align:center; margin-top:15px;">
+    <button id="prevBtn">Previous</button>
+    <button id="nextBtn">Next</button>
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
-const sheetURL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv"; // 👈 इथे तुमचा CSV URL
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv"; // Google Sheet CSV link
 
 let questions = [];
-let index = 0;
+let current = 0;
 
-fetch(sheetURL)
-.then(res => res.text())
-.then(csv => {
-  let rows = csv.split("\n").slice(1);
-  questions = rows.map(r => r.split(","));
-  showQuestion();
-});
-
-function showQuestion(){
-  let q = questions[index];
-  if(!q) return;
-
-  document.getElementById("questionArea").innerHTML = `
-    <div class="question-card">
-      <div class="q-title">प्रश्न ${q[0]} : ${q[1]}</div>
-      <div class="q-details">${q[2]}</div>
-      <div class="proofs">
-        ${q[3] ? `<img src="${q[3]}">` : ""}
-        ${q[4] ? `<img src="${q[4]}">` : ""}
+function showQuestion(index){
+    const q = questions[index];
+    const container = document.getElementById("questionArea");
+    container.innerHTML = `
+      <div style="border:1px solid #ccc; padding:15px; border-radius:8px; background:#fafafa; margin-bottom:15px;">
+        <div><b>अ. क्र.:</b> ${q.qno}</div>
+        <div><b>कामाचे तपशील:</b> ${q.details}</div>
+        <div><b>कार्यवाहीचे स्वरूप:</b> ${q.work_type}</div>
+        <div><b>गुण:</b> ${q.marks}</div>
+        <div><b>उद्दीष्ट:</b> ${q.goal}</div>
+        <div><b>साध्य:</b> ${q.achieved}</div>
+        <div><b>प्राप्त %:</b> ${q.perc}</div>
+        ${q.photo1 ? `<div style="margin-top:10px;"><img src="${q.photo1}" style="max-width:100%; border-radius:8px;"></div>` : ""}
       </div>
-    </div>
-  `;
-
-  prevBtn.disabled = index === 0;
-  nextBtn.disabled = index === questions.length-1;
+    `;
 }
 
-prevBtn.onclick = ()=>{ index--; showQuestion(); }
-nextBtn.onclick = ()=>{ index++; showQuestion(); }
+document.getElementById("prevBtn").onclick = () => {
+    if(current>0){ current--; showQuestion(current); }
+};
+document.getElementById("nextBtn").onclick = () => {
+    if(current<questions.length-1){ current++; showQuestion(current); }
+};
+
+Papa.parse(sheetURL, {
+    download: true,
+    header: true,
+    complete: function(results){
+        questions = results.data;
+        showQuestion(0);
+    }
+});
 </script>
 
 </body>
