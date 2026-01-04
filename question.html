@@ -31,6 +31,7 @@ body{
   font-weight:bold;
 }
 .menu a:hover{background:#002a55;}
+.menu a.active{background:#002a55;}
 
 .container{
   max-width:900px;
@@ -40,20 +41,16 @@ body{
   border-radius:10px;
   box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
+
 .question-card{
   border-left:5px solid #003f7f;
   background:#f9fafb;
   padding:15px;
   border-radius:8px;
+  margin-bottom:15px;
 }
-.q-title{
-  font-size:18px;
-  font-weight:bold;
-  color:#003f7f;
-}
-.q-details{
-  margin:10px 0;
-  line-height:1.6;
+.question-card div{
+  margin:6px 0;
 }
 .proofs img{
   width:100%;
@@ -61,7 +58,13 @@ body{
   border-radius:8px;
   margin:5px;
   cursor:pointer;
+  transition:0.2s;
 }
+.proofs img:hover{
+  transform:scale(1.05);
+  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+
 .nav-btns{
   display:flex;
   justify-content:space-between;
@@ -86,7 +89,7 @@ button:disabled{background:#999;}
 <div class="menu">
   <a href="index.html">मुख्य पान</a>
   <a href="notices.html">नोटीस बोर्ड</a>
-  <a href="question.html" style="background:#002a55;">प्रश्नावली</a>
+  <a href="question.html" class="active">प्रश्नावली</a>
   <a href="gallery.html">फोटो गॅलरी</a>
 </div>
 
@@ -95,7 +98,7 @@ button:disabled{background:#999;}
   <div id="questionArea">
     लोड होत आहे...
   </div>
-  <div style="text-align:center; margin-top:15px;">
+  <div class="nav-btns">
     <button id="prevBtn">Previous</button>
     <button id="nextBtn">Next</button>
   </div>
@@ -103,7 +106,7 @@ button:disabled{background:#999;}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv"; // Google Sheet CSV link
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
 
 let questions = [];
 let current = 0;
@@ -111,20 +114,17 @@ let current = 0;
 function showQuestion(index){
     const q = questions[index];
     const container = document.getElementById("questionArea");
-    
-    // photo1 link
-    let photoHTML = "";
-    if(q["photo1"] && q["photo1"].trim() !== ""){
-        photoHTML = `
-        <div style="margin-top:10px;">
-          <a href="${q["photo1"].trim()}" target="_blank">
-            <img src="${q["photo1"].trim()}" style="max-width:100%; border-radius:8px;" alt="Photo">
-          </a>
-        </div>`;
+
+    // multi-photo support (photo1, photo2, photo3 etc.)
+    let photosHTML = "";
+    for(let i=1; i<=5; i++){
+        if(q[`photo${i}`]){
+            photosHTML += `<a href="${q[`photo${i}`]}" target="_blank"><img src="${q[`photo${i}`]}" alt="photo${i}"></a>`;
+        }
     }
 
     container.innerHTML = `
-      <div style="border:1px solid #ccc; padding:15px; border-radius:8px; background:#fafafa; margin-bottom:15px;">
+      <div class="question-card">
         <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
         <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
         <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
@@ -132,23 +132,24 @@ function showQuestion(index){
         <div><b>उद्दीष्ट:</b> ${q["उद्दीष्ट"]}</div>
         <div><b>साध्य:</b> ${q["साध्य"]}</div>
         <div><b>प्राप्त %:</b> ${q["प्राप्त %"]}</div>
-        ${photoHTML}
+        <div class="proofs">${photosHTML}</div>
       </div>
     `;
+    // disable buttons at ends
+    document.getElementById("prevBtn").disabled = (index === 0);
+    document.getElementById("nextBtn").disabled = (index === questions.length-1);
 }
 
-document.getElementById("prevBtn").onclick = () => {
-    if(current>0){ current--; showQuestion(current); }
-};
-document.getElementById("nextBtn").onclick = () => {
-    if(current<questions.length-1){ current++; showQuestion(current); }
-};
+// navigation
+document.getElementById("prevBtn").onclick = () => { if(current>0){ current--; showQuestion(current); } };
+document.getElementById("nextBtn").onclick = () => { if(current<questions.length-1){ current++; showQuestion(current); } };
 
+// load CSV
 Papa.parse(sheetURL, {
     download: true,
     header: true,
     complete: function(results){
-        questions = results.data;
+        questions = results.data.filter(q=>q["अ. क्र."]); // empty rows remove
         showQuestion(0);
     }
 });
