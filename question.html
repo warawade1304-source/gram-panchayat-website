@@ -3,57 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>प्रश्नावली | ग्रामपंचायत वरवडे</title>
+<title>प्रश्नावली</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f4f6f8;
-}
-.top-header{
+body{margin:0;font-family:Arial;background:#f4f6f8}
+header{
+  background:linear-gradient(to right,#ff9933,#fff,#138808);
   text-align:center;
-  padding:20px;
+  padding:18px;
   font-size:26px;
   font-weight:bold;
-  background:linear-gradient(to right,#ff9933,#ffffff,#138808);
 }
-.menu{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  background:#003f7f;
-}
-.menu a{
-  color:#fff;
-  padding:12px 16px;
-  text-decoration:none;
-  font-weight:bold;
-}
-.menu a:hover,.menu a.active{background:#002a55;}
-
 .container{
   max-width:1200px;
-  margin:20px auto;
+  margin:15px auto;
   background:#fff;
-  padding:20px;
+  padding:15px;
   border-radius:10px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* 🔵 QUESTION NAV */
+/* Question number nav */
 .question-top-nav{
   display:flex;
   gap:6px;
   overflow-x:auto;
   padding:10px;
-  margin-bottom:15px;
   background:#eef3ff;
   border-radius:8px;
 }
 .q-circle{
-  min-width:36px;
-  height:36px;
+  min-width:34px;height:34px;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -63,39 +42,50 @@ body{
   cursor:pointer;
   border:2px solid #999;
 }
-.q-circle.active{
-  background:#003f7f;
-  color:#fff;
-}
+.q-circle.active{background:#003f7f;color:#fff}
 
-/* 🎨 SECTION COLORS */
-.sec1{background:#d0e1ff;}
-.sec2{background:#dff5d0;}
-.sec3{background:#ffe7c2;}
-.sec4{background:#fbcfe8;}
-.sec5{background:#ccfbf1;}
-.sec6{background:#ede9fe;}
-.sec7{background:#fef3c7;}
-.sec8{background:#e5e7eb;}
+/* Section colors */
+.sec1{background:#d0e1ff}
+.sec2{background:#dff5d0}
+.sec3{background:#ffe7c2}
+.sec4{background:#fbcfe8}
+.sec5{background:#ccfbf1}
+.sec6{background:#ede9fe}
+.sec7{background:#fef3c7}
+.sec8{background:#e5e7eb}
 
 .question-card{
-  border-left:5px solid #003f7f;
+  margin-top:12px;
   background:#f9fafb;
+  border-left:5px solid #003f7f;
   padding:15px;
   border-radius:8px;
 }
 
-/* 📸 THUMBNAILS */
+/* Photo thumbs */
 .proofs img{
-  max-width:240px;
+  max-width:220px;
   margin:6px;
   border-radius:8px;
   cursor:pointer;
-  transition:.2s;
 }
-.proofs img:hover{transform:scale(1.05);}
 
-/* 🔲 LIGHTBOX */
+/* Question nav buttons */
+.q-nav{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
+}
+button{
+  padding:10px 20px;
+  border:none;
+  background:#003f7f;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* Lightbox */
 .lightbox{
   position:fixed;
   inset:0;
@@ -113,50 +103,33 @@ body{
 .lb-btn{
   position:absolute;
   color:#fff;
-  font-size:30px;
+  font-size:32px;
   cursor:pointer;
-  user-select:none;
 }
-.lb-close{top:20px;right:30px;}
-.lb-prev{left:20px;}
-.lb-next{right:20px;}
-
-.nav-btns{
-  display:flex;
-  justify-content:space-between;
-  margin-top:15px;
-}
-button{
-  padding:10px 18px;
-  border:none;
-  background:#003f7f;
-  color:#fff;
-  border-radius:6px;
-}
+.lb-close{top:20px;right:30px}
+.lb-prev{left:20px}
+.lb-next{right:20px}
 </style>
 </head>
 
 <body>
 
-<div class="top-header">📄 ग्रामपंचायत वरवडे – प्रश्नावली</div>
-
-<div class="menu">
-  <a href="index.html">मुख्य पान</a>
-  <a href="notices.html">नोटीस बोर्ड</a>
-  <a href="question.html" class="active">प्रश्नावली</a>
-</div>
+<header>📄 प्रश्नावली – ग्रामपंचायत वरवडे</header>
 
 <div class="container">
+
   <div id="questionNav" class="question-top-nav"></div>
+
   <div id="questionArea"></div>
 
-  <div class="nav-btns">
-    <button id="prevBtn">Previous</button>
-    <button id="nextBtn">Next</button>
+  <div class="q-nav">
+    <button onclick="prevQuestion()">⬅ Previous</button>
+    <button onclick="nextQuestion()">Next ➡</button>
   </div>
+
 </div>
 
-<!-- 🔲 LIGHTBOX HTML -->
+<!-- Lightbox -->
 <div id="lightbox" class="lightbox">
   <span class="lb-btn lb-close" onclick="closeLB()">✖</span>
   <span class="lb-btn lb-prev" onclick="prevPhoto()">❮</span>
@@ -166,12 +139,11 @@ button{
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
-const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
-let questions=[],current=0;
-let photos=[],photoIndex=0;
+const sheetURL="YOUR_GOOGLE_SHEET_CSV_LINK";
+let questions=[],currentQ=0;
+let photos=[],currentPhoto=0;
 
-/* SECTION COLOR */
-function sec(no){
+function sectionColor(no){
   no=String(no);
   if(no.startsWith("1."))return"sec1";
   if(no.startsWith("2."))return"sec2";
@@ -183,59 +155,96 @@ function sec(no){
   return"sec8";
 }
 
-/* NAV */
 function renderNav(){
   questionNav.innerHTML="";
   questions.forEach((q,i)=>{
     let d=document.createElement("div");
-    d.className="q-circle "+sec(q["अ. क्र."]);
+    d.className="q-circle "+sectionColor(q["अ. क्र."]);
     d.innerText=q["अ. क्र."];
-    d.onclick=()=>{current=i;showQuestion(i);};
+    if(i===currentQ)d.classList.add("active");
+    d.onclick=()=>{currentQ=i;showQuestion();}
     questionNav.appendChild(d);
   });
 }
 
-/* SHOW QUESTION */
-function showQuestion(i){
-  let q=questions[i];
+function showQuestion(){
+  let q=questions[currentQ];
   photos=[];
-  let html="";
-  for(let p=1;p<=5;p++){
-    if(q[`photo${p}`]){
-      photos.push(q[`photo${p}`]);
-      html+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
+  let imgs="";
+
+  for(let i=1;i<=5;i++){
+    if(q[`photo${i}`]){
+      photos.push(q[`photo${i}`]);
+      imgs+=`<img src="${q[`photo${i}`]}" onclick="openLB(${photos.length-1})">`;
     }
   }
 
   questionArea.innerHTML=`
-    <div class="question-card">
-      <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
-      <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
-      <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
-      <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}
-      <div class="proofs">${html}</div>
+  <div class="question-card">
+     <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
+    <b>प्रश्न क्र.:</b> ${q["अ. क्र."]}<br><br>
+    <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
+    <b>कार्यवाही:</b> ${q["कार्यवाहीचे स्वरूप"]}
+
+    <!-- 🔵 MARKS BLOCK -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;">
+      <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;">
+        <b>गुण</b><br>${q["गुण"]}
+      </div>
+      <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;">
+        <b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}
+      </div>
+      <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;">
+        <b>साध्य</b><br>${q["साध्य"]}
+      </div>
+      <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;">
+        <b>प्राप्त %</b><br>${q["प्राप्त %"]}
+      </div>
     </div>
-  `;
+
+    <div class="proofs">${imgs}</div>
+  </div>`;
+
+  renderNav();
 }
 
-/* 🔲 LIGHTBOX JS */
+/* Question nav */
+function nextQuestion(){
+  if(currentQ < questions.length-1){
+    currentQ++;
+    showQuestion();
+  }
+}
+function prevQuestion(){
+  if(currentQ > 0){
+    currentQ--;
+    showQuestion();
+  }
+}
+
+/* Lightbox */
 function openLB(i){
-  photoIndex=i;
+  currentPhoto=i;
   lbImg.src=photos[i];
   lightbox.style.display="flex";
 }
 function closeLB(){lightbox.style.display="none";}
-function nextPhoto(){photoIndex=(photoIndex+1)%photos.length;lbImg.src=photos[photoIndex];}
-function prevPhoto(){photoIndex=(photoIndex-1+photos.length)%photos.length;lbImg.src=photos[photoIndex];}
+function nextPhoto(){
+  currentPhoto=(currentPhoto+1)%photos.length;
+  lbImg.src=photos[currentPhoto];
+}
+function prevPhoto(){
+  currentPhoto=(currentPhoto-1+photos.length)%photos.length;
+  lbImg.src=photos[currentPhoto];
+}
 
-/* LOAD */
+/* Load sheet */
 Papa.parse(sheetURL,{
   download:true,
   header:true,
   complete:r=>{
     questions=r.data.filter(q=>q["अ. क्र."]);
-    renderNav();
-    showQuestion(0);
+    showQuestion();
   }
 });
 </script>
