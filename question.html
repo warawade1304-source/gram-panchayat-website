@@ -72,7 +72,12 @@ body{
 .sec1{background:#d0e1ff;border-color:#1e40af;}
 .sec2{background:#dff5d0;border-color:#15803d;}
 .sec3{background:#ffe7c2;border-color:#c2410c;}
-.secOther{background:#e5e7eb;border-color:#6b7280;}
+.sec4{background:#e9d5ff;border-color:#7c3aed;}
+.sec5{background:#ccfbf1;border-color:#0f766e;}
+.sec6{background:#fbcfe8;border-color:#be185d;}
+.sec7{background:#fef9c3;border-color:#ca8a04;}
+.sec8{background:#e5e7eb;border-color:#374151;}
+
 
 .q-circle:hover{filter:brightness(0.9);}
 
@@ -183,13 +188,25 @@ function showQuestion(i){
   updateActive();
 }
 
-/* 🔘 SECTION COLOR LOGIC */
 function getSectionClass(no){
-  if(no.startsWith("1.")) return "sec1";
-  if(no.startsWith("2.")) return "sec2";
-  if(no.startsWith("3.")) return "sec3";
-  return "secOther";
+  if(!no) return "sec8";
+
+  // "5.3.2" → "5"
+  const main = no.toString().split(".")[0];
+
+  switch(main){
+    case "1": return "sec1";
+    case "2": return "sec2";
+    case "3": return "sec3";
+    case "4": return "sec4";
+    case "5": return "sec5";
+    case "6": return "sec6";
+    case "7": return "sec7";
+    case "8": return "sec8";
+    default:  return "sec8";
+  }
 }
+
 
 /* 🔵 TOP NAV */
 function renderNav(){
