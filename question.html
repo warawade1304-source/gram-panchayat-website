@@ -41,53 +41,6 @@ body{
   box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* 🔵 QUESTION NUMBER BAR */
-.question-top-nav{
-  display:flex;
-  gap:6px;
-  overflow-x:auto;
-  padding:10px;
-  margin-bottom:15px;
-  background:#eef3ff;
-  border-radius:8px;
-}
-
-/* 🔘 SMALLER CIRCLE */
-.q-circle{
-  min-width:38px;
-  height:38px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  font-weight:bold;
-  cursor:pointer;
-  border:2px solid #999;
-  flex-shrink:0;
-  color:#000;
-}
-
-/* 🎨 SECTION COLORS */
-.sec1{background:#d0e1ff;border-color:#1e40af;}
-.sec2{background:#dff5d0;border-color:#15803d;}
-.sec3{background:#ffe7c2;border-color:#c2410c;}
-.sec4{background:#e9d5ff;border-color:#7c3aed;}
-.sec5{background:#ccfbf1;border-color:#0f766e;}
-.sec6{background:#fbcfe8;border-color:#be185d;}
-.sec7{background:#fef9c3;border-color:#ca8a04;}
-.sec8{background:#e5e7eb;border-color:#374151;}
-
-
-.q-circle:hover{filter:brightness(0.9);}
-
-/* ⭐ ACTIVE */
-.q-circle.active{
-  background:#003f7f !important;
-  color:#fff;
-  border-color:#003f7f;
-}
-
 .question-card{
   border-left:5px solid #003f7f;
   background:#f9fafb;
@@ -95,15 +48,14 @@ body{
   border-radius:8px;
   margin-bottom:20px;
 }
-.question-card div{margin:6px 0;}
 
 .proofs img{
   width:100%;
-  max-width:280px;
+  max-width:220px;
   border-radius:8px;
-  margin:5px;
+  margin:6px;
   cursor:pointer;
-  transition:.2s;
+  transition:0.2s;
 }
 .proofs img:hover{
   transform:scale(1.05);
@@ -124,6 +76,33 @@ button{
   cursor:pointer;
 }
 button:disabled{background:#999;}
+
+/* ---------- IMAGE MODAL ---------- */
+#imgModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  z-index:9999;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+#modalImg{
+  max-width:95%;
+  max-height:85%;
+  border-radius:10px;
+}
+.modal-controls{
+  margin-top:10px;
+}
+.modal-controls button{
+  background:#fff;
+  color:#000;
+  margin:0 10px;
+  font-size:18px;
+  padding:8px 14px;
+}
 </style>
 </head>
 
@@ -139,9 +118,6 @@ button:disabled{background:#999;}
 </div>
 
 <div class="container">
-
-  <div id="questionNav" class="question-top-nav">लोड होत आहे...</div>
-
   <h2>अभियान कार्यवाही</h2>
   <div id="questionArea">लोड होत आहे...</div>
 
@@ -151,94 +127,116 @@ button:disabled{background:#999;}
   </div>
 </div>
 
+<!-- IMAGE MODAL -->
+<div id="imgModal">
+  <img id="modalImg">
+  <div class="modal-controls">
+    <button onclick="prevPhoto()">⟨ Prev</button>
+    <button onclick="closeModal()">✖ Close</button>
+    <button onclick="nextPhoto()">Next ⟩</button>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
-const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
-let questions=[],current=0;
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
 
-/* 🔵 QUESTION DISPLAY */
-function showQuestion(i){
-  const q=questions[i];
-  let photos="";
-  for(let p=1;p<=5;p++){
-    if(q[`photo${p}`]){
-      photos+=`<a href="${q[`photo${p}`]}" target="_blank"><img src="${q[`photo${p}`]}"></a>`;
+let questions = [];
+let current = 0;
+
+/* ----- IMAGE GALLERY STATE ----- */
+let currentPhotos = [];
+let photoIndex = 0;
+
+function showQuestion(index){
+  const q = questions[index];
+  const container = document.getElementById("questionArea");
+
+  currentPhotos = [];
+  let photosHTML = "";
+
+  for(let i=1;i<=5;i++){
+    if(q[`photo${i}`]){
+      currentPhotos.push(q[`photo${i}`]);
+      photosHTML += `
+        <img src="${q[`photo${i}`]}" 
+             onclick="openModal(${currentPhotos.length-1})">
+      `;
     }
   }
 
-  document.getElementById("questionArea").innerHTML=`
+  container.innerHTML = `
     <div class="question-card">
       <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
-      <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
-      <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
-      <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
+      <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
+      <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
+      <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;">
-        <div style="flex:1;background:#d0e1ff;padding:8px;text-align:center;border-radius:6px;"><b>गुण</b><br>${q["गुण"]}</div>
-        <div style="flex:1;background:#dff5d0;padding:8px;text-align:center;border-radius:6px;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
-        <div style="flex:1;background:#fff1d0;padding:8px;text-align:center;border-radius:6px;"><b>साध्य</b><br>${q["साध्य"]}</div>
-        <div style="flex:1;background:#ffe0e0;padding:8px;text-align:center;border-radius:6px;"><b>प्राप्त गुण</b><br>${q["प्राप्त %"]}</div>
+      <div style="display:flex;gap:10px;margin:15px 0;flex-wrap:wrap;">
+        <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;">
+          <b>गुण</b><br>${q["गुण"]}
+        </div>
+        <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;">
+          <b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}
+        </div>
+        <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;">
+          <b>साध्य</b><br>${q["साध्य"]}
+        </div>
+        <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;">
+          <b>प्राप्त %</b><br>${q["प्राप्त %"]}
+        </div>
       </div>
 
-      <div class="proofs">${photos}</div>
+      <div class="proofs">${photosHTML}</div>
     </div>
   `;
-  document.getElementById("prevBtn").disabled=i===0;
-  document.getElementById("nextBtn").disabled=i===questions.length-1;
-  updateActive();
+
+  prevBtn.disabled = (index === 0);
+  nextBtn.disabled = (index === questions.length-1);
 }
 
-function getSectionClass(no){
-  if(!no) return "sec8";
-
-  // "5.3.2" → "5"
-  const main = no.toString().split(".")[0];
-
-  switch(main){
-    case "1": return "sec1";
-    case "2": return "sec2";
-    case "3": return "sec3";
-    case "4": return "sec4";
-    case "5": return "sec5";
-    case "6": return "sec6";
-    case "7": return "sec7";
-    case "8": return "sec8";
-    default:  return "sec8";
+/* ----- MODAL FUNCTIONS ----- */
+function openModal(i){
+  photoIndex = i;
+  document.getElementById("modalImg").src = currentPhotos[photoIndex];
+  document.getElementById("imgModal").style.display="flex";
+}
+function closeModal(){
+  document.getElementById("imgModal").style.display="none";
+}
+function nextPhoto(){
+  if(photoIndex < currentPhotos.length-1){
+    photoIndex++;
+    modalImg.src = currentPhotos[photoIndex];
+  }
+}
+function prevPhoto(){
+  if(photoIndex > 0){
+    photoIndex--;
+    modalImg.src = currentPhotos[photoIndex];
   }
 }
 
+/* keyboard support */
+document.addEventListener("keydown",e=>{
+  if(imgModal.style.display==="flex"){
+    if(e.key==="ArrowRight") nextPhoto();
+    if(e.key==="ArrowLeft") prevPhoto();
+    if(e.key==="Escape") closeModal();
+  }
+});
 
-/* 🔵 TOP NAV */
-function renderNav(){
-  const nav=document.getElementById("questionNav");
-  nav.innerHTML="";
-  questions.forEach((q,i)=>{
-    const d=document.createElement("div");
-    d.className="q-circle "+getSectionClass(q["अ. क्र."]);
-    d.innerText=q["अ. क्र."];
-    d.onclick=()=>{current=i;showQuestion(i);window.scrollTo({top:0,behavior:"smooth"});}
-    nav.appendChild(d);
-  });
-  updateActive();
-}
+/* ----- NAVIGATION ----- */
+prevBtn.onclick=()=>{ if(current>0){current--;showQuestion(current);} };
+nextBtn.onclick=()=>{ if(current<questions.length-1){current++;showQuestion(current);} };
 
-function updateActive(){
-  document.querySelectorAll(".q-circle").forEach((c,i)=>{
-    c.classList.toggle("active",i===current);
-  });
-}
-
-/* NAV BUTTONS */
-prevBtn.onclick=()=>{if(current>0){current--;showQuestion(current);}};
-nextBtn.onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);}};
-
-/* LOAD SHEET */
+/* ----- LOAD SHEET ----- */
 Papa.parse(sheetURL,{
   download:true,
   header:true,
   complete:r=>{
     questions=r.data.filter(q=>q["अ. क्र."]);
-    renderNav();
     showQuestion(0);
   }
 });
