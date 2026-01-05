@@ -190,7 +190,12 @@ function renderNav(){
     let d=document.createElement("div");
     d.className="q-circle "+sec(q["अ. क्र."]);
     d.innerText=q["अ. क्र."];
-    d.onclick=()=>{current=i;showQuestion(i);};
+    d.onclick=()=>{
+  current=i;
+  showQuestion(i);
+  highlightActive();
+};
+
     questionNav.appendChild(d);
   });
 }
@@ -204,6 +209,7 @@ function showQuestion(i){
     if(q[`photo${p}`]){
       photos.push(q[`photo${p}`]);
       html+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
+      highlightActive();
     }
   }
 
@@ -271,7 +277,6 @@ function highlightActive(){
   });
 }
 
-</script>
 </script>
 
 </body>
