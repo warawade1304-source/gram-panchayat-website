@@ -133,6 +133,7 @@ function showQuestion(index){
     container.innerHTML = `
       
       <div class="question-card">
+         <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>Total Marks:</b><br> ${q["Total Marks"] ||
         <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
         <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
         <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
@@ -142,7 +143,7 @@ function showQuestion(index){
           <div style="flex:1; background:#dff5d0; padding:8px; text-align:center; border-radius:6px;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
           <div style="flex:1; background:#fff1d0; padding:8px; text-align:center; border-radius:6px;"><b>साध्य</b><br>${q["साध्य"]}</div>
           <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
-          <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>Total Marks:</b><br> ${q["Total Marks"] || ""}</div>
+          ""}</div>
         </div>
 
         <div class="proofs">${photosHTML}</div>
