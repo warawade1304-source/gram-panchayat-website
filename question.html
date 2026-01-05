@@ -30,8 +30,7 @@ body{
   text-decoration:none;
   font-weight:bold;
 }
-.menu a:hover{background:#002a55;}
-.menu a.active{background:#002a55;}
+.menu a:hover,.menu a.active{background:#002a55;}
 
 .container{
   max-width:1200px;
@@ -42,6 +41,37 @@ body{
   box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 
+/* 🔵 TOP QUESTION NUMBER BAR */
+.question-top-nav{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:10px;
+  margin-bottom:15px;
+  background:#eef3ff;
+  border-radius:8px;
+}
+.q-circle{
+  min-width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#e0e0e0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:bold;
+  cursor:pointer;
+  border:2px solid #999;
+  flex-shrink:0;
+}
+.q-circle:hover{background:#cfe2ff;}
+.q-circle.active{
+  background:#003f7f;
+  color:#fff;
+  border-color:#003f7f;
+}
+
 .question-card{
   border-left:5px solid #003f7f;
   background:#f9fafb;
@@ -49,19 +79,7 @@ body{
   border-radius:8px;
   margin-bottom:20px;
 }
-.question-card div{
-  margin:6px 0;
-}
-
-.total-marks{
-  background:#ffd966;
-  padding:12px;
-  border-radius:8px;
-  text-align:center;
-  font-weight:bold;
-  font-size:18px;
-  margin-bottom:12px;
-}
+.question-card div{margin:6px 0;}
 
 .proofs img{
   width:100%;
@@ -69,7 +87,7 @@ body{
   border-radius:8px;
   margin:5px;
   cursor:pointer;
-  transition:0.2s;
+  transition:.2s;
 }
 .proofs img:hover{
   transform:scale(1.05);
@@ -105,8 +123,16 @@ button:disabled{background:#999;}
 </div>
 
 <div class="container">
+
+  <!-- 🔵 QUESTION NUMBER BAR -->
+  <div id="questionNav" class="question-top-nav">
+    लोड होत आहे...
+  </div>
+
   <h2>अभियान कार्यवाही</h2>
+
   <div id="questionArea">लोड होत आहे...</div>
+
   <div class="nav-btns">
     <button id="prevBtn">Previous</button>
     <button id="nextBtn">Next</button>
@@ -116,60 +142,78 @@ button:disabled{background:#999;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
-let questions = [];   // ⭐ IMPORTANT
-let current = 0;     // ⭐ IMPORTANT
 
+let questions = [];
+let current = 0;
+
+/* 🔵 SHOW QUESTION */
 function showQuestion(index){
-    const q = questions[index];
-    const container = document.getElementById("questionArea");
+  const q = questions[index];
+  let photosHTML = "";
 
-    let photosHTML = "";
-    for(let i=1;i<=5;i++){
-        if(q[`photo${i}`]){
-            photosHTML += `<a href="${q[`photo${i}`]}" target="_blank"><img src="${q[`photo${i}`]}" alt="photo${i}"></a>`;
-        }
+  for(let i=1;i<=5;i++){
+    if(q[`photo${i}`]){
+      photosHTML += `<a href="${q[`photo${i}`]}" target="_blank">
+        <img src="${q[`photo${i}`]}"></a>`;
     }
+  }
 
-    container.innerHTML = `
-      
-      <div class="question-card">
-         <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>Total Marks:</b><br> ${q["Total Marks"] ||""}</div>
-        <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
-        <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
-        <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
+  document.getElementById("questionArea").innerHTML = `
+    <div class="question-card">
+      <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
+      <div><b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}</div>
+      <div><b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}</div>
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;">
-          <div style="flex:1; background:#d0e1ff; padding:8px; text-align:center; border-radius:6px;"><b>गुण</b><br>${q["गुण"]}</div>
-          <div style="flex:1; background:#dff5d0; padding:8px; text-align:center; border-radius:6px;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
-          <div style="flex:1; background:#fff1d0; padding:8px; text-align:center; border-radius:6px;"><b>साध्य</b><br>${q["साध्य"]}</div>
-          <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
-          
-        </div>
-
-        <div class="proofs">${photosHTML}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;">
+        <div style="flex:1;background:#d0e1ff;padding:8px;text-align:center;border-radius:6px;"><b>गुण</b><br>${q["गुण"]}</div>
+        <div style="flex:1;background:#dff5d0;padding:8px;text-align:center;border-radius:6px;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
+        <div style="flex:1;background:#fff1d0;padding:8px;text-align:center;border-radius:6px;"><b>साध्य</b><br>${q["साध्य"]}</div>
+        <div style="flex:1;background:#ffe0e0;padding:8px;text-align:center;border-radius:6px;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
       </div>
-    `;
 
-    document.getElementById("prevBtn").disabled = (index === 0);
-    document.getElementById("nextBtn").disabled = (index === questions.length-1);
+      <div class="proofs">${photosHTML}</div>
+    </div>
+  `;
+
+  document.getElementById("prevBtn").disabled = (index===0);
+  document.getElementById("nextBtn").disabled = (index===questions.length-1);
+  updateActiveCircle();
 }
 
-document.getElementById("prevBtn").onclick = () => { if(current>0){ current--; showQuestion(current); } };
-document.getElementById("nextBtn").onclick = () => { if(current<questions.length-1){ current++; showQuestion(current); } };
+/* 🔵 QUESTION NUMBER BAR */
+function renderQuestionNav(){
+  const nav = document.getElementById("questionNav");
+  nav.innerHTML = "";
 
-Papa.parse(sheetURL, {
-    download:true,
-    header:true,
-    complete:function(results){
-        questions = results.data.filter(q=>q["अ. क्र."]); 
-        // Total Marks from last row G107
-        if(results.data[106] && results.data[106]["प्राप्त %"]){
-            totalMarks = results.data[106]["प्राप्त %"]; // G107
-        } else {
-            totalMarks = "N/A";
-        }
-        showQuestion(0);
-    }
+  questions.forEach((q,i)=>{
+    const d=document.createElement("div");
+    d.className="q-circle";
+    d.innerText=q["अ. क्र."];
+    d.onclick=()=>{current=i;showQuestion(i);window.scrollTo({top:0,behavior:"smooth"});}
+    nav.appendChild(d);
+  });
+  updateActiveCircle();
+}
+
+function updateActiveCircle(){
+  document.querySelectorAll(".q-circle").forEach((c,i)=>{
+    c.classList.toggle("active",i===current);
+  });
+}
+
+/* 🔵 NAV BUTTONS */
+document.getElementById("prevBtn").onclick=()=>{if(current>0){current--;showQuestion(current);}};
+document.getElementById("nextBtn").onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);}};
+
+/* 🔵 LOAD SHEET */
+Papa.parse(sheetURL,{
+  download:true,
+  header:true,
+  complete:(res)=>{
+    questions=res.data.filter(q=>q["अ. क्र."]);
+    renderQuestionNav();
+    showQuestion(0);
+  }
 });
 </script>
 
