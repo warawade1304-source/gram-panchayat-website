@@ -236,6 +236,32 @@ function closeLB(){lightbox.style.display="none";}
 function nextPhoto(){photoIndex=(photoIndex+1)%photos.length;lbImg.src=photos[photoIndex];}
 function prevPhoto(){photoIndex=(photoIndex-1+photos.length)%photos.length;lbImg.src=photos[photoIndex];}
 
+  <script>
+// 🔄 NEXT / PREVIOUS QUESTION BUTTON FIX
+document.getElementById("nextBtn").onclick = function () {
+  if (current < questions.length - 1) {
+    current++;
+    showQuestion(current);
+    highlightActive();
+  }
+};
+
+document.getElementById("prevBtn").onclick = function () {
+  if (current > 0) {
+    current--;
+    showQuestion(current);
+    highlightActive();
+  }
+};
+
+// 🔵 Active circle highlight
+function highlightActive(){
+  document.querySelectorAll(".q-circle").forEach((c,i)=>{
+    c.classList.toggle("active", i === current);
+  });
+}
+</script>
+
 /* LOAD */
 Papa.parse(sheetURL,{
   download:true,
