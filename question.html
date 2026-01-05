@@ -41,7 +41,7 @@ body{
   box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* 🔵 QUESTION NUMBER BAR */
+/* 🔵 QUESTION NAV */
 .question-top-nav{
   display:flex;
   gap:6px;
@@ -51,8 +51,6 @@ body{
   background:#eef3ff;
   border-radius:8px;
 }
-
-/* 🔘 QUESTION CIRCLE */
 .q-circle{
   min-width:36px;
   height:36px;
@@ -64,43 +62,64 @@ body{
   font-weight:bold;
   cursor:pointer;
   border:2px solid #999;
-  flex-shrink:0;
+}
+.q-circle.active{
+  background:#003f7f;
+  color:#fff;
 }
 
 /* 🎨 SECTION COLORS */
-.sec1{background:#d0e1ff;border-color:#1e40af;}
-.sec2{background:#dff5d0;border-color:#15803d;}
-.sec3{background:#ffe7c2;border-color:#c2410c;}
-.sec4{background:#fbcfe8;border-color:#9d174d;}
-.sec5{background:#ccfbf1;border-color:#0f766e;}
-.sec6{background:#ede9fe;border-color:#5b21b6;}
-.sec7{background:#fef3c7;border-color:#92400e;}
-.sec8{background:#e5e7eb;border-color:#374151;}
-
-.q-circle:hover{filter:brightness(0.9);}
-
-/* ⭐ ACTIVE */
-.q-circle.active{
-  background:#003f7f !important;
-  color:#fff;
-  border-color:#003f7f;
-}
+.sec1{background:#d0e1ff;}
+.sec2{background:#dff5d0;}
+.sec3{background:#ffe7c2;}
+.sec4{background:#fbcfe8;}
+.sec5{background:#ccfbf1;}
+.sec6{background:#ede9fe;}
+.sec7{background:#fef3c7;}
+.sec8{background:#e5e7eb;}
 
 .question-card{
   border-left:5px solid #003f7f;
   background:#f9fafb;
   padding:15px;
   border-radius:8px;
-  margin-bottom:20px;
 }
 
+/* 📸 THUMBNAILS */
 .proofs img{
-  width:100%;
-  max-width:260px;
-  border-radius:8px;
+  max-width:240px;
   margin:6px;
+  border-radius:8px;
   cursor:pointer;
+  transition:.2s;
 }
+.proofs img:hover{transform:scale(1.05);}
+
+/* 🔲 LIGHTBOX */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.lightbox img{
+  max-width:90%;
+  max-height:85%;
+  border-radius:10px;
+}
+.lb-btn{
+  position:absolute;
+  color:#fff;
+  font-size:30px;
+  cursor:pointer;
+  user-select:none;
+}
+.lb-close{top:20px;right:30px;}
+.lb-prev{left:20px;}
+.lb-next{right:20px;}
 
 .nav-btns{
   display:flex;
@@ -113,9 +132,7 @@ button{
   background:#003f7f;
   color:#fff;
   border-radius:6px;
-  cursor:pointer;
 }
-button:disabled{background:#999;}
 </style>
 </head>
 
@@ -127,15 +144,11 @@ button:disabled{background:#999;}
   <a href="index.html">मुख्य पान</a>
   <a href="notices.html">नोटीस बोर्ड</a>
   <a href="question.html" class="active">प्रश्नावली</a>
-  <a href="gallery.html">फोटो गॅलरी</a>
 </div>
 
 <div class="container">
-
-  <div id="questionNav" class="question-top-nav">लोड होत आहे...</div>
-
-  <h2>अभियान कार्यवाही</h2>
-  <div id="questionArea">लोड होत आहे...</div>
+  <div id="questionNav" class="question-top-nav"></div>
+  <div id="questionArea"></div>
 
   <div class="nav-btns">
     <button id="prevBtn">Previous</button>
@@ -143,88 +156,78 @@ button:disabled{background:#999;}
   </div>
 </div>
 
+<!-- 🔲 LIGHTBOX HTML -->
+<div id="lightbox" class="lightbox">
+  <span class="lb-btn lb-close" onclick="closeLB()">✖</span>
+  <span class="lb-btn lb-prev" onclick="prevPhoto()">❮</span>
+  <img id="lbImg">
+  <span class="lb-btn lb-next" onclick="nextPhoto()">❯</span>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
-
 let questions=[],current=0;
+let photos=[],photoIndex=0;
 
-/* 🎨 SECTION COLOR FIX */
-function getSectionClass(no){
-  no = String(no).trim();   // ⭐ FIX
-  if(no.startsWith("1.")) return "sec1";
-  if(no.startsWith("2.")) return "sec2";
-  if(no.startsWith("3.")) return "sec3";
-  if(no.startsWith("4.")) return "sec4";
-  if(no.startsWith("5.")) return "sec5";
-  if(no.startsWith("6.")) return "sec6";
-  if(no.startsWith("7.")) return "sec7";
-  if(no.startsWith("8"))  return "sec8";
-  return "sec8";
+/* SECTION COLOR */
+function sec(no){
+  no=String(no);
+  if(no.startsWith("1."))return"sec1";
+  if(no.startsWith("2."))return"sec2";
+  if(no.startsWith("3."))return"sec3";
+  if(no.startsWith("4."))return"sec4";
+  if(no.startsWith("5."))return"sec5";
+  if(no.startsWith("6."))return"sec6";
+  if(no.startsWith("7."))return"sec7";
+  return"sec8";
 }
 
-/* 🔵 TOP NAV */
+/* NAV */
 function renderNav(){
-  const nav=document.getElementById("questionNav");
-  nav.innerHTML="";
+  questionNav.innerHTML="";
   questions.forEach((q,i)=>{
-    const d=document.createElement("div");
-    d.className="q-circle "+getSectionClass(q["अ. क्र."]);
+    let d=document.createElement("div");
+    d.className="q-circle "+sec(q["अ. क्र."]);
     d.innerText=q["अ. क्र."];
-    d.onclick=()=>{
-      current=i;
-      showQuestion(i);
-      window.scrollTo({top:0,behavior:"smooth"});
-    };
-    nav.appendChild(d);
-  });
-  updateActive();
-}
-
-function updateActive(){
-  document.querySelectorAll(".q-circle").forEach((c,i)=>{
-    c.classList.toggle("active",i===current);
+    d.onclick=()=>{current=i;showQuestion(i);};
+    questionNav.appendChild(d);
   });
 }
 
-/* 🔵 QUESTION DISPLAY */
+/* SHOW QUESTION */
 function showQuestion(i){
-  const q=questions[i];
-  let photos="";
+  let q=questions[i];
+  photos=[];
+  let html="";
   for(let p=1;p<=5;p++){
     if(q[`photo${p}`]){
-      photos+=`<img src="${q[`photo${p}`]}">`;
+      photos.push(q[`photo${p}`]);
+      html+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
     }
   }
 
-  document.getElementById("questionArea").innerHTML=`
+  questionArea.innerHTML=`
     <div class="question-card">
-       <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
       <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
       <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
       <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;">
-        <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;"><b>गुण</b><br>${q["गुण"]}</div>
-        <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
-        <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;"><b>साध्य</b><br>${q["साध्य"]}</div>
-        <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
-      </div>
-
-      <div class="proofs">${photos}</div>
+      <div class="proofs">${html}</div>
     </div>
   `;
-
-  prevBtn.disabled=i===0;
-  nextBtn.disabled=i===questions.length-1;
-  updateActive();
 }
 
-/* NAV BUTTONS */
-prevBtn.onclick=()=>{if(current>0){current--;showQuestion(current);}};
-nextBtn.onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);}};
+/* 🔲 LIGHTBOX JS */
+function openLB(i){
+  photoIndex=i;
+  lbImg.src=photos[i];
+  lightbox.style.display="flex";
+}
+function closeLB(){lightbox.style.display="none";}
+function nextPhoto(){photoIndex=(photoIndex+1)%photos.length;lbImg.src=photos[photoIndex];}
+function prevPhoto(){photoIndex=(photoIndex-1+photos.length)%photos.length;lbImg.src=photos[photoIndex];}
 
-/* LOAD SHEET */
+/* LOAD */
 Papa.parse(sheetURL,{
   download:true,
   header:true,
