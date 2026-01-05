@@ -244,8 +244,34 @@ Papa.parse(sheetURL,{
     questions=r.data.filter(q=>q["अ. क्र."]);
     renderNav();
     showQuestion(0);
+    highlightActive(); 
   }
 });
+  // 🔄 NEXT / PREVIOUS QUESTION BUTTON
+document.getElementById("nextBtn").onclick = function () {
+  if (current < questions.length - 1) {
+    current++;
+    showQuestion(current);
+    highlightActive();
+  }
+};
+
+document.getElementById("prevBtn").onclick = function () {
+  if (current > 0) {
+    current--;
+    showQuestion(current);
+    highlightActive();
+  }
+};
+
+// 🔵 Active circle highlight
+function highlightActive(){
+  document.querySelectorAll(".q-circle").forEach((c,i)=>{
+    c.classList.toggle("active", i === current);
+  });
+}
+
+</script>
 </script>
 
 </body>
