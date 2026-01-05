@@ -41,33 +41,44 @@ body{
   box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* 🔵 TOP QUESTION NUMBER BAR */
+/* 🔵 QUESTION NUMBER BAR */
 .question-top-nav{
   display:flex;
-  gap:8px;
+  gap:6px;
   overflow-x:auto;
   padding:10px;
   margin-bottom:15px;
   background:#eef3ff;
   border-radius:8px;
 }
+
+/* 🔘 SMALLER CIRCLE */
 .q-circle{
-  min-width:48px;
-  height:48px;
+  min-width:38px;
+  height:38px;
   border-radius:50%;
-  background:#e0e0e0;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:12px;
+  font-size:11px;
   font-weight:bold;
   cursor:pointer;
   border:2px solid #999;
   flex-shrink:0;
+  color:#000;
 }
-.q-circle:hover{background:#cfe2ff;}
+
+/* 🎨 SECTION COLORS */
+.sec1{background:#d0e1ff;border-color:#1e40af;}
+.sec2{background:#dff5d0;border-color:#15803d;}
+.sec3{background:#ffe7c2;border-color:#c2410c;}
+.secOther{background:#e5e7eb;border-color:#6b7280;}
+
+.q-circle:hover{filter:brightness(0.9);}
+
+/* ⭐ ACTIVE */
 .q-circle.active{
-  background:#003f7f;
+  background:#003f7f !important;
   color:#fff;
   border-color:#003f7f;
 }
@@ -124,13 +135,9 @@ button:disabled{background:#999;}
 
 <div class="container">
 
-  <!-- 🔵 QUESTION NUMBER BAR -->
-  <div id="questionNav" class="question-top-nav">
-    लोड होत आहे...
-  </div>
+  <div id="questionNav" class="question-top-nav">लोड होत आहे...</div>
 
   <h2>अभियान कार्यवाही</h2>
-
   <div id="questionArea">लोड होत आहे...</div>
 
   <div class="nav-btns">
@@ -141,24 +148,20 @@ button:disabled{background:#999;}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
+const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
+let questions=[],current=0;
 
-let questions = [];
-let current = 0;
-
-/* 🔵 SHOW QUESTION */
-function showQuestion(index){
-  const q = questions[index];
-  let photosHTML = "";
-
-  for(let i=1;i<=5;i++){
-    if(q[`photo${i}`]){
-      photosHTML += `<a href="${q[`photo${i}`]}" target="_blank">
-        <img src="${q[`photo${i}`]}"></a>`;
+/* 🔵 QUESTION DISPLAY */
+function showQuestion(i){
+  const q=questions[i];
+  let photos="";
+  for(let p=1;p<=5;p++){
+    if(q[`photo${p}`]){
+      photos+=`<a href="${q[`photo${p}`]}" target="_blank"><img src="${q[`photo${p}`]}"></a>`;
     }
   }
 
-  document.getElementById("questionArea").innerHTML = `
+  document.getElementById("questionArea").innerHTML=`
     <div class="question-card">
       <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>Total Marks:</b><br> ${q["Total Marks"] ||""}</div>
       <div><b>अ. क्र.:</b> ${q["अ. क्र."]}</div>
@@ -172,47 +175,53 @@ function showQuestion(index){
         <div style="flex:1;background:#ffe0e0;padding:8px;text-align:center;border-radius:6px;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
       </div>
 
-      <div class="proofs">${photosHTML}</div>
+      <div class="proofs">${photos}</div>
     </div>
   `;
-
-  document.getElementById("prevBtn").disabled = (index===0);
-  document.getElementById("nextBtn").disabled = (index===questions.length-1);
-  updateActiveCircle();
+  document.getElementById("prevBtn").disabled=i===0;
+  document.getElementById("nextBtn").disabled=i===questions.length-1;
+  updateActive();
 }
 
-/* 🔵 QUESTION NUMBER BAR */
-function renderQuestionNav(){
-  const nav = document.getElementById("questionNav");
-  nav.innerHTML = "";
+/* 🔘 SECTION COLOR LOGIC */
+function getSectionClass(no){
+  if(no.startsWith("1.")) return "sec1";
+  if(no.startsWith("2.")) return "sec2";
+  if(no.startsWith("3.")) return "sec3";
+  return "secOther";
+}
 
+/* 🔵 TOP NAV */
+function renderNav(){
+  const nav=document.getElementById("questionNav");
+  nav.innerHTML="";
   questions.forEach((q,i)=>{
     const d=document.createElement("div");
-    d.className="q-circle";
+    d.className="q-circle "+getSectionClass(q["अ. क्र."]);
     d.innerText=q["अ. क्र."];
     d.onclick=()=>{current=i;showQuestion(i);window.scrollTo({top:0,behavior:"smooth"});}
     nav.appendChild(d);
   });
-  updateActiveCircle();
+  updateActive();
 }
 
-function updateActiveCircle(){
+function updateActive(){
   document.querySelectorAll(".q-circle").forEach((c,i)=>{
     c.classList.toggle("active",i===current);
   });
 }
 
-/* 🔵 NAV BUTTONS */
-document.getElementById("prevBtn").onclick=()=>{if(current>0){current--;showQuestion(current);}};
-document.getElementById("nextBtn").onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);}};
+/* NAV BUTTONS */
+prevBtn.onclick=()=>{if(current>0){current--;showQuestion(current);}};
+nextBtn.onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);}};
 
-/* 🔵 LOAD SHEET */
+/* LOAD SHEET */
 Papa.parse(sheetURL,{
   download:true,
   header:true,
-  complete:(res)=>{
-    questions=res.data.filter(q=>q["अ. क्र."]);
-    renderQuestionNav();
+  complete:r=>{
+    questions=r.data.filter(q=>q["अ. क्र."]);
+    renderNav();
     showQuestion(0);
   }
 });
