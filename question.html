@@ -11,13 +11,30 @@ body{
   font-family:Arial,sans-serif;
   background:#f4f6f8;
 }
+
+/* 🔵 HEADER */
 .top-header{
   text-align:center;
-  padding:20px;
+  padding:18px;
   font-size:26px;
   font-weight:bold;
   background:linear-gradient(to right,#ff9933,#ffffff,#138808);
 }
+
+/* 🟢 TOTAL MARKS FIXED */
+.total-banner{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:#003f7f;
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  font-size:18px;
+  font-weight:bold;
+}
+
+/* MENU */
 .menu{
   display:flex;
   justify-content:center;
@@ -52,8 +69,8 @@ body{
   border-radius:8px;
 }
 .q-circle{
-  min-width:36px;
-  height:36px;
+  min-width:30px;
+  height:30px;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -61,25 +78,31 @@ body{
   font-size:11px;
   font-weight:bold;
   cursor:pointer;
-  border:2px solid #999;
+  border:2px solid #555;
 }
+
+/* 🔥 PERCENTAGE COLORS */
+.mark-0{background:#ef4444;color:#fff;}
+.mark-low{background:#fb923c;color:#000;}
+.mark-mid{background:#fde047;color:#000;}
+.mark-full{background:#22c55e;color:#fff;}
+
 .q-circle.active{
-  background:#003f7f;
-  color:#fff;
+  outline:3px solid #003f7f;
 }
 
 /* 🎨 SECTION COLORS */
-.sec1{background:#d0e1ff;}
-.sec2{background:#dff5d0;}
-.sec3{background:#ffe7c2;}
-.sec4{background:#fbcfe8;}
-.sec5{background:#ccfbf1;}
-.sec6{background:#ede9fe;}
-.sec7{background:#fef3c7;}
-.sec8{background:#e5e7eb;}
+.sec1{box-shadow:0 0 0 3px #93c5fd inset;}
+.sec2{box-shadow:0 0 0 3px #86efac inset;}
+.sec3{box-shadow:0 0 0 3px #fde68a inset;}
+.sec4{box-shadow:0 0 0 3px #f9a8d4 inset;}
+.sec5{box-shadow:0 0 0 3px #5eead4 inset;}
+.sec6{box-shadow:0 0 0 3px #c4b5fd inset;}
+.sec7{box-shadow:0 0 0 3px #fde68a inset;}
+.sec8{box-shadow:0 0 0 3px #e5e7eb inset;}
 
 .question-card{
-  border-left:5px solid #003f7f;
+  border-left:6px solid #003f7f;
   background:#f9fafb;
   padding:15px;
   border-radius:8px;
@@ -87,19 +110,17 @@ body{
 
 /* 📸 THUMBNAILS */
 .proofs img{
-  max-width:240px;
+  max-width:220px;
   margin:6px;
   border-radius:8px;
   cursor:pointer;
-  transition:.2s;
 }
-.proofs img:hover{transform:scale(1.05);}
 
 /* 🔲 LIGHTBOX */
 .lightbox{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.8);
+  background:rgba(0,0,0,0.85);
   display:none;
   align-items:center;
   justify-content:center;
@@ -108,18 +129,16 @@ body{
 .lightbox img{
   max-width:90%;
   max-height:85%;
-  border-radius:10px;
 }
 .lb-btn{
   position:absolute;
   color:#fff;
-  font-size:30px;
+  font-size:32px;
   cursor:pointer;
-  user-select:none;
 }
 .lb-close{top:20px;right:30px;}
-.lb-prev{left:20px;}
-.lb-next{right:20px;}
+.lb-prev{left:30px;}
+.lb-next{right:30px;}
 
 .nav-btns{
   display:flex;
@@ -134,31 +153,16 @@ button{
   border-radius:6px;
 }
 </style>
-      <!-- ✅ GOOGLE ANALYTICS इथेच टाका -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MKCTMSRM8R');
-</script>
-<!-- ✅ GOOGLE ANALYTICS END -->
 </head>
 
 <body>
 
 <div class="top-header">📄 ग्रामपंचायत वरवडे – प्रश्नावली</div>
+<div class="total-banner" id="totalMarks">Total Marks : --</div>
 
-<!-- Menu -->
 <div class="menu">
-    <a href="index.html">मुख्य पान</a>
-    <a href="panch-info.html">पंचायतीची माहिती</a>
-    <a href="documents.html">शासकीय योजना</a>
-    <a href="notices.html">नोटीस बोर्ड</a>
-    <a href="question.html">प्रश्न सूची</a>
-    <a href="gallery.html">फोटो गॅलरी</a>
-    <a href="tax.html">मालमत्ता कर</a>
-    <a href="contact.html">संपर्क</a>
+  <a href="index.html">मुख्य पान</a>
+  <a href="question.html" class="active">प्रश्न सूची</a>
 </div>
 
 <div class="container">
@@ -171,7 +175,7 @@ button{
   </div>
 </div>
 
-<!-- 🔲 LIGHTBOX HTML -->
+<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
   <span class="lb-btn lb-close" onclick="closeLB()">✖</span>
   <span class="lb-btn lb-prev" onclick="prevPhoto()">❮</span>
@@ -182,10 +186,9 @@ button{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
-let questions=[],current=0;
-let photos=[],photoIndex=0;
+let questions=[],current=0,photos=[],photoIndex=0;
 
-/* SECTION COLOR */
+/* SECTION */
 function sec(no){
   no=String(no);
   if(no.startsWith("1."))return"sec1";
@@ -198,19 +201,23 @@ function sec(no){
   return"sec8";
 }
 
+/* MARK COLOR */
+function markClass(v){
+  v=Number(v)||0;
+  if(v===0)return"mark-0";
+  if(v<=50)return"mark-low";
+  if(v<100)return"mark-mid";
+  return"mark-full";
+}
+
 /* NAV */
 function renderNav(){
   questionNav.innerHTML="";
   questions.forEach((q,i)=>{
     let d=document.createElement("div");
-    d.className="q-circle "+sec(q["अ. क्र."]);
+    d.className="q-circle "+sec(q["अ. क्र."])+" "+markClass(q["Percentage"]);
     d.innerText=q["अ. क्र."];
-    d.onclick=()=>{
-  current=i;
-  showQuestion(i);
-  highlightActive();
-};
-
+    d.onclick=()=>{current=i;showQuestion(i);highlightActive();};
     questionNav.appendChild(d);
   });
 }
@@ -219,40 +226,34 @@ function renderNav(){
 function showQuestion(i){
   let q=questions[i];
   photos=[];
-  let html="";
+  let imgs="";
   for(let p=1;p<=5;p++){
     if(q[`photo${p}`]){
       photos.push(q[`photo${p}`]);
-      html+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
-      highlightActive();
+      imgs+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
     }
   }
+  document.getElementById("totalMarks").innerText="Total Marks : "+(q["Total Marks"]||"--");
 
   questionArea.innerHTML=`
-    <div class="question-card">
-       <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
-      <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
-      <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
-      <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}
-      
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;">
-        <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;"><b>गुण</b><br>${q["गुण"]}</div>
-        <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
-        <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;"><b>साध्य</b><br>${q["साध्य"]}</div>
-        <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
-      </div>
+  <div class="question-card">
+    <b>${q["अ. क्र."]}</b><br><br>
+    ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
+    ${q["कार्यवाहीचे स्वरूप"]}
 
-      <div class="proofs">${html}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;">
+      <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;">गुण<br>${q["गुण"]}</div>
+      <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;">उद्दीष्ट<br>${q["उद्दीष्ट"]}</div>
+      <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;">साध्य<br>${q["साध्य"]}</div>
+      <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;">Percentage<br>${q["Percentage"]}%</div>
     </div>
-  `;
+
+    <div class="proofs">${imgs}</div>
+  </div>`;
 }
 
-/* 🔲 LIGHTBOX JS */
-function openLB(i){
-  photoIndex=i;
-  lbImg.src=photos[i];
-  lightbox.style.display="flex";
-}
+/* LIGHTBOX */
+function openLB(i){photoIndex=i;lbImg.src=photos[i];lightbox.style.display="flex";}
 function closeLB(){lightbox.style.display="none";}
 function nextPhoto(){photoIndex=(photoIndex+1)%photos.length;lbImg.src=photos[photoIndex];}
 function prevPhoto(){photoIndex=(photoIndex-1+photos.length)%photos.length;lbImg.src=photos[photoIndex];}
@@ -265,34 +266,19 @@ Papa.parse(sheetURL,{
     questions=r.data.filter(q=>q["अ. क्र."]);
     renderNav();
     showQuestion(0);
-    highlightActive(); 
+    highlightActive();
   }
 });
-  // 🔄 NEXT / PREVIOUS QUESTION BUTTON
-document.getElementById("nextBtn").onclick = function () {
-  if (current < questions.length - 1) {
-    current++;
-    showQuestion(current);
-    highlightActive();
-  }
-};
 
-document.getElementById("prevBtn").onclick = function () {
-  if (current > 0) {
-    current--;
-    showQuestion(current);
-    highlightActive();
-  }
-};
+/* NEXT / PREV */
+nextBtn.onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);highlightActive();}};
+prevBtn.onclick=()=>{if(current>0){current--;showQuestion(current);highlightActive();}};
 
-// 🔵 Active circle highlight
 function highlightActive(){
   document.querySelectorAll(".q-circle").forEach((c,i)=>{
-    c.classList.toggle("active", i === current);
+    c.classList.toggle("active",i===current);
   });
 }
-
 </script>
-
 </body>
 </html>
