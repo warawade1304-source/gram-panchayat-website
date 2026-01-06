@@ -6,117 +6,39 @@
 <title>प्रश्नावली | ग्रामपंचायत वरवडे</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f4f6f8;
-}
+body{margin:0;font-family:Arial;background:#f4f6f8;}
+.top-header{text-align:center;padding:20px;font-size:26px;font-weight:bold;
+background:linear-gradient(to right,#ff9933,#fff,#138808);}
+.menu{display:flex;justify-content:center;flex-wrap:wrap;background:#003f7f;}
+.menu a{color:#fff;padding:12px 16px;text-decoration:none;font-weight:bold;}
+.container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;border-radius:10px;}
 
-/* 🔵 HEADER */
-.top-header{
-  text-align:center;
-  padding:18px;
-  font-size:26px;
-  font-weight:bold;
-  background:linear-gradient(to right,#ff9933,#ffffff,#138808);
-}
-
-/* 🟢 TOTAL MARKS FIXED */
-.total-banner{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:#003f7f;
-  color:#fff;
-  text-align:center;
-  padding:10px;
-  font-size:18px;
-  font-weight:bold;
-}
-
-/* MENU */
-.menu{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  background:#003f7f;
-}
-.menu a{
-  color:#fff;
-  padding:12px 16px;
-  text-decoration:none;
-  font-weight:bold;
-}
-.menu a:hover,.menu a.active{background:#002a55;}
-
-.container{
-  max-width:1200px;
-  margin:20px auto;
-  background:#fff;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.15);
-}
-
-/* 🔵 QUESTION NAV */
-.question-top-nav{
-  display:flex;
-  gap:6px;
-  overflow-x:auto;
-  padding:10px;
-  margin-bottom:15px;
-  background:#eef3ff;
-  border-radius:8px;
-}
+.question-top-nav{display:flex;gap:6px;overflow-x:auto;padding:10px;background:#eef3ff;border-radius:8px;}
 .q-circle{
-  min-width:30px;
-  height:30px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  font-weight:bold;
-  cursor:pointer;
-  border:2px solid #555;
+  min-width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:bold;cursor:pointer;
+  border:3px solid #999;
 }
+.q-circle.active{outline:3px solid #000;}
 
-/* 🔥 PERCENTAGE COLORS */
-.mark-0{background:#ef4444;color:#fff;}
-.mark-low{background:#fb923c;color:#000;}
-.mark-mid{background:#fde047;color:#000;}
-.mark-full{background:#22c55e;color:#fff;}
+.mark-0{background:#dc2626;color:#fff;}
+.mark-low{background:#f97316;color:#fff;}
+.mark-mid{background:#facc15;color:#000;}
+.mark-full{background:#16a34a;color:#fff;}
 
-.q-circle.active{
-  outline:3px solid #003f7f;
-}
+.question-card{border-left:5px solid #003f7f;background:#f9fafb;padding:15px;border-radius:8px;}
 
-/* 🎨 SECTION COLORS */
-.sec1{box-shadow:0 0 0 3px #93c5fd inset;}
-.sec2{box-shadow:0 0 0 3px #86efac inset;}
-.sec3{box-shadow:0 0 0 3px #fde68a inset;}
-.sec4{box-shadow:0 0 0 3px #f9a8d4 inset;}
-.sec5{box-shadow:0 0 0 3px #5eead4 inset;}
-.sec6{box-shadow:0 0 0 3px #c4b5fd inset;}
-.sec7{box-shadow:0 0 0 3px #fde68a inset;}
-.sec8{box-shadow:0 0 0 3px #e5e7eb inset;}
-
-.question-card{
-  border-left:6px solid #003f7f;
-  background:#f9fafb;
-  padding:15px;
-  border-radius:8px;
-}
-
-/* 📸 THUMBNAILS */
 .proofs img{
   max-width:220px;
   margin:6px;
   border-radius:8px;
   cursor:pointer;
+  transition:.2s;
 }
+.proofs img:hover{transform:scale(1.05);}
 
-/* 🔲 LIGHTBOX */
+/* LIGHTBOX */
 .lightbox{
   position:fixed;
   inset:0;
@@ -126,43 +48,30 @@ body{
   justify-content:center;
   z-index:9999;
 }
-.lightbox img{
-  max-width:90%;
-  max-height:85%;
-}
+.lightbox img{max-width:90%;max-height:85%;border-radius:10px;}
 .lb-btn{
   position:absolute;
   color:#fff;
-  font-size:32px;
+  font-size:34px;
   cursor:pointer;
+  user-select:none;
 }
 .lb-close{top:20px;right:30px;}
-.lb-prev{left:30px;}
-.lb-next{right:30px;}
+.lb-prev{left:20px;}
+.lb-next{right:20px;}
 
-.nav-btns{
-  display:flex;
-  justify-content:space-between;
-  margin-top:15px;
-}
-button{
-  padding:10px 18px;
-  border:none;
-  background:#003f7f;
-  color:#fff;
-  border-radius:6px;
-}
+.nav-btns{display:flex;justify-content:space-between;margin-top:15px;}
+button{padding:10px 18px;border:none;background:#003f7f;color:#fff;border-radius:6px;}
 </style>
 </head>
 
 <body>
 
 <div class="top-header">📄 ग्रामपंचायत वरवडे – प्रश्नावली</div>
-<div class="total-banner" id="totalMarks">Total Marks : --</div>
 
 <div class="menu">
   <a href="index.html">मुख्य पान</a>
-  <a href="question.html" class="active">प्रश्न सूची</a>
+  <a href="question.html">प्रश्न सूची</a>
 </div>
 
 <div class="container">
@@ -186,20 +95,9 @@ button{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
-let questions=[],current=0,photos=[],photoIndex=0;
 
-/* SECTION */
-function sec(no){
-  no=String(no);
-  if(no.startsWith("1."))return"sec1";
-  if(no.startsWith("2."))return"sec2";
-  if(no.startsWith("3."))return"sec3";
-  if(no.startsWith("4."))return"sec4";
-  if(no.startsWith("5."))return"sec5";
-  if(no.startsWith("6."))return"sec6";
-  if(no.startsWith("7."))return"sec7";
-  return"sec8";
-}
+let questions=[],current=0;
+let photos=[],photoIndex=0;
 
 /* MARK COLOR */
 function markClass(v){
@@ -215,7 +113,7 @@ function renderNav(){
   questionNav.innerHTML="";
   questions.forEach((q,i)=>{
     let d=document.createElement("div");
-    d.className="q-circle "+sec(q["अ. क्र."])+" "+markClass(q["Percentage"]);
+    d.className=`q-circle ${markClass(q["Percentage"]||q["प्राप्त %"])}`;
     d.innerText=q["अ. क्र."];
     d.onclick=()=>{current=i;showQuestion(i);highlightActive();};
     questionNav.appendChild(d);
@@ -226,37 +124,47 @@ function renderNav(){
 function showQuestion(i){
   let q=questions[i];
   photos=[];
-  let imgs="";
+  let imgHTML="";
+
   for(let p=1;p<=5;p++){
     if(q[`photo${p}`]){
       photos.push(q[`photo${p}`]);
-      imgs+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
+      imgHTML+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
     }
   }
-  document.getElementById("totalMarks").innerText="Total Marks : "+(q["Total Marks"]||"--");
 
   questionArea.innerHTML=`
-  <div class="question-card">
-    <b>${q["अ. क्र."]}</b><br><br>
-    ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
-    ${q["कार्यवाहीचे स्वरूप"]}
-
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;">
-      <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;">गुण<br>${q["गुण"]}</div>
-      <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;">उद्दीष्ट<br>${q["उद्दीष्ट"]}</div>
-      <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;">साध्य<br>${q["साध्य"]}</div>
-      <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;">Percentage<br>${q["Percentage"]}%</div>
-    </div>
-
-    <div class="proofs">${imgs}</div>
-  </div>`;
+    <div class="question-card">
+      <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
+      <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
+      <b>कार्यवाही:</b> ${q["कार्यवाहीचे स्वरूप"]}<br><br>
+      <b>Percentage:</b> ${q["Percentage"] || q["प्राप्त %"]}%<br><br>
+      <div class="proofs">${imgHTML}</div>
+    </div>`;
 }
 
-/* LIGHTBOX */
-function openLB(i){photoIndex=i;lbImg.src=photos[i];lightbox.style.display="flex";}
+/* LIGHTBOX FUNCTIONS */
+function openLB(i){
+  photoIndex=i;
+  lbImg.src=photos[i];
+  lightbox.style.display="flex";
+}
 function closeLB(){lightbox.style.display="none";}
-function nextPhoto(){photoIndex=(photoIndex+1)%photos.length;lbImg.src=photos[photoIndex];}
-function prevPhoto(){photoIndex=(photoIndex-1+photos.length)%photos.length;lbImg.src=photos[photoIndex];}
+function nextPhoto(){
+  photoIndex=(photoIndex+1)%photos.length;
+  lbImg.src=photos[photoIndex];
+}
+function prevPhoto(){
+  photoIndex=(photoIndex-1+photos.length)%photos.length;
+  lbImg.src=photos[photoIndex];
+}
+
+/* ACTIVE */
+function highlightActive(){
+  document.querySelectorAll(".q-circle").forEach((c,i)=>{
+    c.classList.toggle("active",i===current);
+  });
+}
 
 /* LOAD */
 Papa.parse(sheetURL,{
@@ -270,15 +178,10 @@ Papa.parse(sheetURL,{
   }
 });
 
-/* NEXT / PREV */
+/* NEXT / PREV QUESTION */
 nextBtn.onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);highlightActive();}};
 prevBtn.onclick=()=>{if(current>0){current--;showQuestion(current);highlightActive();}};
-
-function highlightActive(){
-  document.querySelectorAll(".q-circle").forEach((c,i)=>{
-    c.classList.toggle("active",i===current);
-  });
-}
 </script>
+
 </body>
 </html>
