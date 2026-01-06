@@ -135,9 +135,14 @@ function showQuestion(i){
 
   questionArea.innerHTML=`
     <div class="question-card">
+      <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
       <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
       <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
-      <b>कार्यवाही:</b> ${q["कार्यवाहीचे स्वरूप"]}<br><br>
+      <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}<br><br>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;"> <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;"><b>गुण</b><br>${q["गुण"]}</div>
+      <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
+      <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;"><b>साध्य</b><br>${q["साध्य"]}</div>
+      <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;"><b>प्राप्त %</b><br>${q["प्राप्त %"]}</div>
       <b>Percentage:</b> ${q["Percentage"] || q["प्राप्त %"]}%<br><br>
       <div class="proofs">${imgHTML}</div>
     </div>`;
