@@ -242,57 +242,40 @@ function weatherMarathi(main){
 }
 
 
-// 📅 Date Marathi
-function marathiDate(dateStr){
-  const d = new Date(dateStr);
-  const days = ["रविवार","सोमवार","मंगळवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"];
-  return days[d.getDay()];
-}
-
-/* 🌦️ TODAY */
+/* 🔹 CURRENT WEATHER */
 fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
-.then(r=>r.json())
-.then(today=>{
-  document.getElementById("weather").innerHTML =
-    "📍 ठिकाण : <b>वरवडे (ता. माढा)</b><br>" +
-    "🌡️ तापमान : <b>" + today.main.temp + "°C</b><br>" +
-    "☁️ स्थिती : <b>" + weatherMarathi(today.weather[0].main) + "</b><br>" +
-    "💧 आर्द्रता : <b>" + today.main.humidity + "%</b>";
-});
+.then(r => r.json())
+.then(current => {
 
-/* 📅 FORECAST */
-fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
-.then(r=>r.json())
-.then(data=>{
-  let html = "";
-  let usedDates = [];
+  const temp = current.main.temp;
+  const humidity = current.main.humidity;
+  const statusMR = weatherMarathi(current.weather[0].main);
 
-  data.list.forEach(item=>{
-    let date = item.dt_txt.split(" ")[0];
-    let hour = item.dt_txt.split(" ")[1];
+  /* 🔹 FORECAST (Rain Probability) */
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+  .then(r => r.json())
+  .then(forecast => {
 
-    if(hour === "12:00:00" && !usedDates.includes(date)){
-      usedDates.push(date);
+    // पुढील 3 तासातील पाऊस शक्यता
+    let pop = forecast.list[0].pop; 
+    let rainChance = Math.round(pop * 100);
 
-      html += `
-      <div style="border-bottom:1px solid #ddd;padding:8px 0;">
-        <b>${marathiDate(item.dt_txt)}</b><br>
-        🌡️ ${item.main.temp_min.toFixed(0)}°C - ${item.main.temp_max.toFixed(0)}°C<br>
-        ☁️ ${weatherMarathi(item.weather[0].main)}<br>
-        🌧️ पाऊस शक्यता : ${Math.round(item.pop * 100)}%
-      </div>`;
-    }
+    document.getElementById("weather").innerHTML =
+      "📍 ठिकाण : <b>वरवडे (ता. माढा)</b><br>" +
+      "🌡️ तापमान : <b>" + temp + "°C</b><br>" +
+      "☁️ स्थिती : <b>" + statusMR + "</b><br>" +
+      "🌧️ पाऊस शक्यता : <b>" + rainChance + "%</b><br>" +
+      "💧 आर्द्रता : <b>" + humidity + "%</b>";
   });
-
-  document.getElementById("forecast").innerHTML = html;
 })
-.catch(()=>{
-  document.getElementById("forecast").innerHTML =
-  "हवामान अंदाज उपलब्ध नाही";
+.catch(() => {
+  document.getElementById("weather").innerHTML =
+  "⚠️ हवामान माहिती सध्या उपलब्ध नाही";
 });
 </script>
 </body>
 </html>
+
 
 
 
