@@ -188,21 +188,33 @@ gtag('config', 'G-MKCTMSRM8R');
 
 <script>
 const apiKey = "b49514c717e32754db5ef2f43c71e93c";
-const city = "Warawade";
 
-fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=mr`)
-.then(r => r.json())
-.then(d => {
-document.getElementById("weather").innerHTML =
-`🌡️ तापमान : <b>${d.main.temp}°C</b><br>
-☁️ स्थिती : <b>${d.weather[0].description}</b><br>
-💧 आर्द्रता : <b>${d.main.humidity}%</b>`;
+const lat = 17.96;   // Warawade (Madha)
+const lon = 75.31;
+
+fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=mr`)
+.then(response => response.json())
+.then(data => {
+  if(data.cod !== 200){
+    throw new Error("Error");
+  }
+
+  document.getElementById("weather").innerHTML =
+  "📍 ठिकाण : <b>वरवडे (ता. माढा)</b><br>" +
+  "🌡️ तापमान : <b>" + data.main.temp + "°C</b><br>" +
+  "☁️ स्थिती : <b>" + data.weather[0].description + "</b><br>" +
+  "💧 आर्द्रता : <b>" + data.main.humidity + "%</b>";
 })
-.catch(()=>{ document.getElementById("weather").innerHTML="माहिती उपलब्ध नाही";});
+.catch(() => {
+  document.getElementById("weather").innerHTML =
+  "⚠️ हवामान माहिती सध्या उपलब्ध नाही";
+});
 </script>
+
 
 </body>
 </html>
+
 
 
 
