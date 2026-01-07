@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>नोटीस बोर्ड | ग्रामपंचायत वरवडे</title>
+
 <style>
 body {
     margin:0;
@@ -76,21 +77,48 @@ body {
     color:#555;
     margin-bottom:5px;
 }
+
+/* ✅ NEW SECTIONS */
+.section {
+    margin-top:25px;
+    padding:15px;
+    background:#ffffff;
+    border-radius:8px;
+    border:1px solid #ddd;
+}
+.section h2 {
+    margin-top:0;
+    color:#b30000;
+}
+.section a {
+    display:block;
+    padding:6px 0;
+    text-decoration:none;
+    color:#003366;
+    font-weight:bold;
+}
+iframe {
+    width:100%;
+    height:300px;
+    border:none;
+    border-radius:8px;
+}
 </style>
-    <!-- ✅ GOOGLE ANALYTICS इथेच टाका -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MKCTMSRM8R"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MKCTMSRM8R');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MKCTMSRM8R');
 </script>
-<!-- ✅ GOOGLE ANALYTICS END -->
 </head>
+
 <body>
 
 <div class="top-header">🌾 ग्रामपंचायत वरवडे – नोटीस बोर्ड</div>
-<!-- Menu -->
+
 <div class="menu">
     <a href="index.html">मुख्य पान</a>
     <a href="panch-info.html">पंचायतीची माहिती</a>
@@ -102,48 +130,81 @@ body {
     <a href="contact.html">संपर्क</a>
 </div>
 
-<!-- Scrolling News -->
 <div class="news-bar">
     <span class="news-title">📰 ताज्या सूचना :</span>
-    <marquee behavior="scroll" direction="left" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
-        🏠 मालमत्ता करावर 50% सवलत लागू कर भरण्याची अंतिम तारीख 31/12/2025 |  | 🧹 स्वच्छता मोहिमेत सर्व ग्रामस्थांनी सहभागी व्हावे
+    <marquee scrollamount="5">
+        🏠 मालमत्ता करावर 50% सवलत – अंतिम तारीख 31/12/2025 | 🧹 स्वच्छता मोहिमेत सहभागी व्हा
     </marquee>
 </div>
 
 <div class="container">
-    <h2>सर्व नोटीसेस / सूचना</h2>
 
-    
-    <div class="notice-card">
-        <div class="notice-date">25/11/2025</div>
-        <h3>घरपट्टी अंतिम तारीख</h3>
-        <p>घरपट्टी भरण्याची अंतिम तारीख 31/12/2025 आहे. वेळेवर भरण्याची विनंती.</p>
-    </div>
+<h2>सर्व नोटीसेस / सूचना</h2>
 
-    <div class="notice-card">
-        <div class="notice-date">20/11/2025</div>
-        <h3>मालमत्ता कर सवलत</h3>
-        <p>मालमत्ता करावर 50% सवलत लागू आहे. सवलत फक्त 31/12/2025 पर्यंत.</p>
-    </div>
+<div class="notice-card">
+    <div class="notice-date">25/11/2025</div>
+    <h3>घरपट्टी अंतिम तारीख</h3>
+    <p>घरपट्टी भरण्याची अंतिम तारीख 31/12/2025 आहे.</p>
+</div>
 
-    <div class="notice-card">
-        <div class="notice-date">15/11/2025</div>
-        <h3>स्वच्छता मोहिमेतील सहभागी</h3>
-        <p>सर्व ग्रामस्थांनी स्वच्छता मोहिमेत सहभागी होण्याची विनंती.</p>
-    </div>
+<div class="notice-card">
+    <div class="notice-date">20/11/2025</div>
+    <h3>मालमत्ता कर सवलत</h3>
+    <p>मालमत्ता करावर 50% सवलत लागू आहे.</p>
+</div>
+
+<div class="notice-card">
+    <div class="notice-date">15/11/2025</div>
+    <h3>स्वच्छता मोहिम</h3>
+    <p>सर्व ग्रामस्थांनी स्वच्छता मोहिमेत सहभागी व्हावे.</p>
+</div>
+
+<!-- 🌦️ WEATHER -->
+<div class="section">
+<h2>🌦️ आजचे हवामान</h2>
+<div id="weather">लोड होत आहे...</div>
+</div>
+
+<!-- 🌧️ RADAR -->
+<div class="section">
+<h2>🌧️ पावसाचा रडार</h2>
+<iframe src="https://www.rainviewer.com/map.html?loc=19.75,75.71,6"></iframe>
+</div>
+
+<!-- 📰 PAPERS -->
+<div class="section">
+<h2>📰 मराठी वर्तमानपत्रे</h2>
+<a href="https://www.lokmat.com/" target="_blank">लोकमत</a>
+<a href="https://maharashtratimes.com/" target="_blank">महाराष्ट्र टाइम्स</a>
+<a href="https://www.sakalmedia.com/" target="_blank">सकाळ</a>
+<a href="https://www.loksatta.com/" target="_blank">लोकसत्ता</a>
+</div>
+
+<!-- 📺 NEWS -->
+<div class="section">
+<h2>📺 मराठी न्यूज चॅनेल</h2>
+<a href="https://www.tv9marathi.com/" target="_blank">TV9 Marathi</a>
+<a href="https://www.abpmajha.com/" target="_blank">ABP Majha</a>
+<a href="https://zeenews.india.com/marathi" target="_blank">Zee 24 Taas</a>
+<a href="https://www.news18marathi.com/" target="_blank">News18 Marathi</a>
+</div>
 
 </div>
 
-  
+<script>
+const apiKey = "YOUR_API_KEY_HERE";
+const city = "Solapur";
+
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=mr`)
+.then(r => r.json())
+.then(d => {
+document.getElementById("weather").innerHTML =
+`🌡️ तापमान : <b>${d.main.temp}°C</b><br>
+☁️ स्थिती : <b>${d.weather[0].description}</b><br>
+💧 आर्द्रता : <b>${d.main.humidity}%</b>`;
+})
+.catch(()=>{ document.getElementById("weather").innerHTML="माहिती उपलब्ध नाही";});
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
