@@ -139,6 +139,7 @@ gtag('config', 'G-MKCTMSRM8R');
 
 <div class="container">
 
+    
 <h2>सर्व नोटीसेस / सूचना</h2>
 
 <div class="notice-card">
@@ -260,12 +261,45 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&app
     let pop = forecast.list[0].pop; 
     let rainChance = Math.round(pop * 100);
 
-    document.getElementById("weather").innerHTML =
-      "📍 ठिकाण : <b>वरवडे (ता. माढा)</b><br>" +
-      "🌡️ तापमान : <b>" + temp + "°C</b><br>" +
-      "☁️ स्थिती : <b>" + statusMR + "</b><br>" +
-      "🌧️ पाऊस शक्यता : <b>" + rainChance + "%</b><br>" +
-      "💧 आर्द्रता : <b>" + humidity + "%</b>";
+   document.getElementById("weather").innerHTML =
+`<div style="
+    display:grid; 
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); 
+    gap:15px; 
+    font-family:Arial,sans-serif;
+    margin-top:10px;
+">
+
+  <!-- तापमान -->
+  <div style="border-radius:12px; padding:18px 10px; text-align:center; background:#e8f4ff; color:#0b5ed7;">
+    <div style="font-size:26px; font-weight:bold; margin-bottom:5px;">${temp}°C</div>
+    <div style="font-size:15px; font-weight:600;">🌡️ तापमान</div>
+  </div>
+
+  <!-- हवामान स्थिती -->
+  <div style="border-radius:12px; padding:18px 10px; text-align:center; background:#eaf7ea; color:#1e7e34;">
+    <div style="font-size:26px; font-weight:bold; margin-bottom:5px;">${statusMR}</div>
+    <div style="font-size:15px; font-weight:600;">☁️ स्थिती</div>
+  </div>
+
+  <!-- पाऊस शक्यता -->
+  <div style="border-radius:12px; padding:18px 10px; text-align:center; background:#fff3e0; color:#ef6c00;">
+    <div style="font-size:26px; font-weight:bold; margin-bottom:5px;">${rainChance}%</div>
+    <div style="font-size:15px; font-weight:600;">🌧️ पाऊस शक्यता</div>
+  </div>
+
+  <!-- आर्द्रता -->
+  <div style="border-radius:12px; padding:18px 10px; text-align:center; background:#f3e8ff; color:#6f42c1;">
+    <div style="font-size:26px; font-weight:bold; margin-bottom:5px;">${humidity}%</div>
+    <div style="font-size:15px; font-weight:600;">💧 आर्द्रता</div>
+  </div>
+
+</div>
+
+<p style="text-align:center; font-weight:bold; margin-top:10px;">
+📍 ठिकाण : वरवडे (ता. माढा)
+</p>`;
+
   });
 })
 .catch(() => {
@@ -275,6 +309,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&app
 </script>
 </body>
 </html>
+
 
 
 
