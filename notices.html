@@ -241,29 +241,59 @@ function weatherMarathi(main){
   }
 }
 
+
+// 📅 Date Marathi
+function marathiDate(dateStr){
+  const d = new Date(dateStr);
+  const days = ["रविवार","सोमवार","मंगळवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"];
+  return days[d.getDay()];
+}
+
+/* 🌦️ TODAY */
 fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
-.then(res => res.json())
-.then(data => {
-
-  const temp = data.main.temp;
-  const humidity = data.main.humidity;
-  const statusEN = data.weather[0].main;
-  const statusMR = weatherMarathi(statusEN);
-
+.then(r=>r.json())
+.then(today=>{
   document.getElementById("weather").innerHTML =
     "📍 ठिकाण : <b>वरवडे (ता. माढा)</b><br>" +
-    "🌡️ तापमान : <b>" + temp + "°C</b><br>" +
-    "☁️ स्थिती : <b>" + statusMR + "</b><br>" +
-    "💧 आर्द्रता : <b>" + humidity + "%</b>";
+    "🌡️ तापमान : <b>" + today.main.temp + "°C</b><br>" +
+    "☁️ स्थिती : <b>" + weatherMarathi(today.weather[0].main) + "</b><br>" +
+    "💧 आर्द्रता : <b>" + today.main.humidity + "%</b>";
+});
+
+/* 📅 FORECAST */
+fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+.then(r=>r.json())
+.then(data=>{
+  let html = "";
+  let usedDates = [];
+
+  data.list.forEach(item=>{
+    let date = item.dt_txt.split(" ")[0];
+    let hour = item.dt_txt.split(" ")[1];
+
+    if(hour === "12:00:00" && !usedDates.includes(date)){
+      usedDates.push(date);
+
+      html += `
+      <div style="border-bottom:1px solid #ddd;padding:8px 0;">
+        <b>${marathiDate(item.dt_txt)}</b><br>
+        🌡️ ${item.main.temp_min.toFixed(0)}°C - ${item.main.temp_max.toFixed(0)}°C<br>
+        ☁️ ${weatherMarathi(item.weather[0].main)}<br>
+        🌧️ पाऊस शक्यता : ${Math.round(item.pop * 100)}%
+      </div>`;
+    }
+  });
+
+  document.getElementById("forecast").innerHTML = html;
 })
-.catch(() => {
-  document.getElementById("weather").innerHTML =
-    "⚠️ हवामान माहिती सध्या उपलब्ध नाही";
+.catch(()=>{
+  document.getElementById("forecast").innerHTML =
+  "हवामान अंदाज उपलब्ध नाही";
 });
 </script>
-
 </body>
 </html>
+
 
 
 
