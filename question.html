@@ -67,17 +67,17 @@ button{padding:10px 18px;border:none;background:#003f7f;color:#fff;border-radius
 
 <body>
 
-<div class="top-header">📄 मुख्यमंत्री समृद्ध पंचायतराज अभियान प्रश्नावली - वरवडे </div>
+<div class="top-header">📄 मुख्यमंत्री समृद्ध पंचायतराज अभियान प्रश्नावली - वरवडे</div>
 
 <div class="menu">
-    <a href="index.html">मुख्य पान</a>
-    <a href="panch-info.html">पंचायतीची माहिती</a>
-    <a href="documents.html">शासकीय योजना</a>
-    <a href="notices.html">नोटीस बोर्ड</a>
-    <a href="question.html">प्रश्न सूची</a>
-    <a href="gallery.html">फोटो गॅलरी</a>
-    <a href="tax.html">मालमत्ता कर</a>
-    <a href="contact.html">संपर्क</a>
+  <a href="index.html">मुख्य पान</a>
+  <a href="panch-info.html">पंचायतीची माहिती</a>
+  <a href="documents.html">शासकीय योजना</a>
+  <a href="notices.html">नोटीस बोर्ड</a>
+  <a href="question.html">प्रश्न सूची</a>
+  <a href="gallery.html">फोटो गॅलरी</a>
+  <a href="tax.html">मालमत्ता कर</a>
+  <a href="contact.html">संपर्क</a>
 </div>
 
 <div class="container">
@@ -97,150 +97,129 @@ button{padding:10px 18px;border:none;background:#003f7f;color:#fff;border-radius
   <img id="lbImg">
   <span class="lb-btn lb-next" onclick="nextPhoto()">❯</span>
 </div>
-<script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbzTUBugmOy1OCF2rb_bwQsGX6DnHq4gBCDBZghWQnFGYygkND2gxRSXMdWvoAxGz9vebQ/exec";
-
-function submitReply(){
-  let reply = document.getElementById("replyText").value.trim();
-  if(reply === ""){
-    alert("कृपया उत्तर लिहा");
-    return;
-  }
-
-  let q = questions[current];
-
-  fetch(scriptURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      qno: q["अ. क्र."],
-      question: q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"],
-      reply: reply
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("msg").innerText = "✅ उत्तर सेव झाले";
-    document.getElementById("replyText").value = "";
-  })
-  .catch(err => {
-    alert("Error! पुन्हा प्रयत्न करा");
-  });
-}
-</script>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
 <script>
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnEL6UTK923-LxSvXS9RDG0BRTIVGSvYJzRgtRzTAGXEB1LLxah0O0IS-9RPCftRVssR4Nq0_GlfWU/pub?gid=0&single=true&output=csv";
+/* ===== CONFIG ===== */
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
+
+/* ===== DOM ===== */
 const questionNav = document.getElementById("questionNav");
 const questionArea = document.getElementById("questionArea");
 const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
+const lightbox = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
 
-  let questions=[],current=0;
-let photos=[],photoIndex=0;
+/* ===== DATA ===== */
+let questions = [];
+let current = 0;
+let photos = [];
+let photoIndex = 0;
 
-/* MARK COLOR */
+/* ===== FUNCTIONS ===== */
 function markClass(v){
-  v=Number(v)||0;
-  if(v===0)return"mark-0";
-  if(v<=50)return"mark-low";
-  if(v<100)return"mark-mid";
-  return"mark-full";
+  v = Number(v) || 0;
+  if(v === 0) return "mark-0";
+  if(v <= 50) return "mark-low";
+  if(v < 100) return "mark-mid";
+  return "mark-full";
 }
 
-/* NAV */
 function renderNav(){
-  questionNav.innerHTML="";
+  questionNav.innerHTML = "";
   questions.forEach((q,i)=>{
-    let d=document.createElement("div");
-    d.className=`q-circle ${markClass(q["Percentage"]||q["प्राप्त %"])}`;
-    d.innerText=q["अ. क्र."];
-    d.onclick=()=>{current=i;showQuestion(i);highlightActive();};
+    const d = document.createElement("div");
+    d.className = `q-circle ${markClass(q["Percentage"] || q["प्राप्त %"])}`;
+    d.innerText = q["अ. क्र."];
+    d.onclick = () => {
+      current = i;
+      showQuestion(i);
+      highlightActive();
+    };
     questionNav.appendChild(d);
   });
 }
 
-/* SHOW QUESTION */
 function showQuestion(i){
-  let q=questions[i];
-  photos=[];
-  let imgHTML="";
+  const q = questions[i];
+  photos = [];
+  let imgHTML = "";
 
   for(let p=1;p<=5;p++){
     if(q[`photo${p}`]){
       photos.push(q[`photo${p}`]);
-      imgHTML+=`<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
+      imgHTML += `<img src="${q[`photo${p}`]}" onclick="openLB(${photos.length-1})">`;
     }
   }
 
-  questionArea.innerHTML=`
-    <div class="question-card">
-      <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
-      <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
-      <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
-      <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"]}<br><br>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;"> <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;"><b>गुण</b><br>${q["गुण"]}</div>
-      <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
-      <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;"><b>साध्य</b><br>${q["साध्य"]}</div>
-      <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;"><b>प्राप्त गुण</b><br>${q["प्राप्त %"]}</div>
-      <div style="flex:1;background:#e9f7ef;padding:8px;border-radius:6px;text-align:center;"><b>Percentage:</b><br>${q["Percentage"] || q["प्राप्त %"]}%<br><br>
-      </div>
-      </div>
-      <div class="proofs">${imgHTML}</div>
-    </div>
-  <hr>
-<h3>✍️ या प्रश्नाचे उत्तर</h3>
-
-<textarea id="replyText" rows="4" style="width:100%;padding:10px;border-radius:6px;"
- placeholder="येथे उत्तर लिहा..."></textarea>
-
-<br><br>
-<button onclick="submitReply()">उत्तर सबमिट करा</button>
-
-<p id="msg" style="color:green;font-weight:bold;"></p>
-`;
+  questionArea.innerHTML = `
+  <div class="question-card">
+    <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
+    <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
+    <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"] || ""}<br><br>
+    <div class="proofs">${imgHTML}</div>
+  </div>`;
 }
 
-/* LIGHTBOX FUNCTIONS */
-function openLB(i){
-  photoIndex=i;
-  lbImg.src=photos[i];
-  lightbox.style.display="flex";
-}
-function closeLB(){lightbox.style.display="none";}
-function nextPhoto(){
-  photoIndex=(photoIndex+1)%photos.length;
-  lbImg.src=photos[photoIndex];
-}
-function prevPhoto(){
-  photoIndex=(photoIndex-1+photos.length)%photos.length;
-  lbImg.src=photos[photoIndex];
-}
-
-/* ACTIVE */
 function highlightActive(){
   document.querySelectorAll(".q-circle").forEach((c,i)=>{
-    c.classList.toggle("active",i===current);
+    c.classList.toggle("active", i === current);
   });
 }
 
-/* LOAD */
+/* LIGHTBOX */
+function openLB(i){
+  photoIndex = i;
+  lbImg.src = photos[i];
+  lightbox.style.display = "flex";
+}
+function closeLB(){ lightbox.style.display="none"; }
+function nextPhoto(){
+  photoIndex = (photoIndex+1)%photos.length;
+  lbImg.src = photos[photoIndex];
+}
+function prevPhoto(){
+  photoIndex = (photoIndex-1+photos.length)%photos.length;
+  lbImg.src = photos[photoIndex];
+}
+
+/* LOAD CSV */
 Papa.parse(sheetURL,{
   download:true,
   header:true,
-  complete:r=>{
-    questions=r.data.filter(q=>q["अ. क्र."]);
+  complete: r=>{
+    questions = r.data.filter(q=>q["अ. क्र."]);
+    if(!questions.length){
+      questionArea.innerHTML = "❌ Sheet मध्ये डेटा नाही";
+      return;
+    }
     renderNav();
     showQuestion(0);
     highlightActive();
+  },
+  error: err=>{
+    questionArea.innerHTML = "❌ CSV Load Error";
+    console.error(err);
   }
 });
 
-/* NEXT / PREV QUESTION */
-nextBtn.onclick=()=>{if(current<questions.length-1){current++;showQuestion(current);highlightActive();}};
-prevBtn.onclick=()=>{if(current>0){current--;showQuestion(current);highlightActive();}};
+/* NAV BUTTONS */
+nextBtn.onclick = ()=>{
+  if(current < questions.length-1){
+    current++;
+    showQuestion(current);
+    highlightActive();
+  }
+};
+prevBtn.onclick = ()=>{
+  if(current > 0){
+    current--;
+    showQuestion(current);
+    highlightActive();
+  }
+};
 </script>
 
 </body>
