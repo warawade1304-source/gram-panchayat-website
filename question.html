@@ -97,6 +97,7 @@ button{padding:10px 18px;border:none;background:#003f7f;color:#fff;border-radius
   <img id="lbImg">
   <span class="lb-btn lb-next" onclick="nextPhoto()">❯</span>
 </div>
+<script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbzTUBugmOy1OCF2rb_bwQsGX6DnHq4gBCDBZghWQnFGYygkND2gxRSXMdWvoAxGz9vebQ/exec";
 
 function submitReply(){
@@ -110,6 +111,7 @@ function submitReply(){
 
   fetch(scriptURL, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       qno: q["अ. क्र."],
       question: q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"],
@@ -125,11 +127,13 @@ function submitReply(){
     alert("Error! पुन्हा प्रयत्न करा");
   });
 }
+</script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
-
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnEL6UTK923-LxSvXS9RDG0BRTIVGSvYJzRgtRzTAGXEB1LLxah0O0IS-9RPCftRVssR4Nq0_GlfWU/pub?gid=0&single=true&output=csv";
 let questions=[],current=0;
 let photos=[],photoIndex=0;
 
@@ -181,7 +185,7 @@ function showQuestion(i){
       </div>
       </div>
       <div class="proofs">${imgHTML}</div>
-    </div>`;
+    </div>
   <hr>
 <h3>✍️ या प्रश्नाचे उत्तर</h3>
 
@@ -192,7 +196,7 @@ function showQuestion(i){
 <button onclick="submitReply()">उत्तर सबमिट करा</button>
 
 <p id="msg" style="color:green;font-weight:bold;"></p>
-
+`;
 }
 
 /* LIGHTBOX FUNCTIONS */
