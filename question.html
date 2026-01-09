@@ -42,6 +42,32 @@ background:linear-gradient(to right,#ff9933,#fff,#138808);}
 button{padding:10px 18px;border:none;background:#003f7f;color:#fff;border-radius:6px;}
 
 input,textarea{border:1px solid #ccc;border-radius:6px;}
+  /* LIGHTBOX POPUP */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.lightbox img{
+  max-width:90%;
+  max-height:85%;
+  border-radius:10px;
+}
+.lb-btn{
+  position:absolute;
+  color:#fff;
+  font-size:34px;
+  cursor:pointer;
+  user-select:none;
+}
+.lb-close{top:20px;right:30px;}
+.lb-prev{left:20px;}
+.lb-next{right:20px;}
+
 </style>
 
 <!-- GOOGLE ANALYTICS -->
@@ -169,7 +195,7 @@ function showQuestion(i){
     <b>आपले नाव:</b><br>
     <input type="text" id="userName" style="width:100%;padding:8px;"><br><br>
 
-    <b>आपले उत्तर / Reply:</b><br>
+    <b>आपल्या सूचना:</b><br>
     <textarea id="replyText" rows="4" style="width:100%;padding:8px;"></textarea><br><br>
 
     <button onclick="submitReply()">Submit Reply</button>
