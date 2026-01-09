@@ -38,40 +38,20 @@ background:linear-gradient(to right,#ff9933,#fff,#138808);}
 }
 .proofs img:hover{transform:scale(1.05);}
 
-/* LIGHTBOX */
-.lightbox{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.85);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
-.lightbox img{max-width:90%;max-height:85%;border-radius:10px;}
-.lb-btn{
-  position:absolute;
-  color:#fff;
-  font-size:34px;
-  cursor:pointer;
-  user-select:none;
-}
-.lb-close{top:20px;right:30px;}
-.lb-prev{left:20px;}
-.lb-next{right:20px;}
-
 .nav-btns{display:flex;justify-content:space-between;margin-top:15px;}
 button{padding:10px 18px;border:none;background:#003f7f;color:#fff;border-radius:6px;}
+
+input,textarea{border:1px solid #ccc;border-radius:6px;}
 </style>
-  <!-- ✅ GOOGLE ANALYTICS इथेच टाका -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+
+<!-- GOOGLE ANALYTICS -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MKCTMSRM8R"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-MKCTMSRM8R');
 </script>
-<!-- ✅ GOOGLE ANALYTICS END -->
 </head>
 
 <body>
@@ -110,10 +90,11 @@ button{padding:10px 18px;border:none;background:#003f7f;color:#fff;border-radius
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 
 <script>
-/* ===== CONFIG ===== */
+/* CONFIG */
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTcFT9M0fQK1TI1FgzTwUTTmK5CIsA7yK5zXPSoZ0SkjzGtuDmyKhvaXjPedNlnHy8zCWGRyNIwj7WU/pub?output=csv";
+const postURL = "https://script.google.com/macros/s/AKfycbxmUKpOCYIGSRlGYlcHAfdz1mi9Nv9rPkAVLG9ndN7CYJO7ZNgUKjol12u-PXv7q1w9Qw/exec";
 
-/* ===== DOM ===== */
+/* DOM */
 const questionNav = document.getElementById("questionNav");
 const questionArea = document.getElementById("questionArea");
 const nextBtn = document.getElementById("nextBtn");
@@ -121,13 +102,13 @@ const prevBtn = document.getElementById("prevBtn");
 const lightbox = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
 
-/* ===== DATA ===== */
+/* DATA */
 let questions = [];
 let current = 0;
 let photos = [];
 let photoIndex = 0;
 
-/* ===== FUNCTIONS ===== */
+/* FUNCTIONS */
 function markClass(v){
   v = Number(v) || 0;
   if(v === 0) return "mark-0";
@@ -165,17 +146,65 @@ function showQuestion(i){
 
   questionArea.innerHTML = `
   <div class="question-card">
-  <div style="flex:1; background:#ffe0e0; padding:8px; text-align:center; border-radius:6px;"><b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] ||""}</div>
+    <div style="background:#ffe0e0;padding:8px;text-align:center;border-radius:6px;">
+      <b>एकूण प्राप्त गुण:</b><br> ${q["Total Marks"] || ""}
+    </div><br>
+
     <b>अ. क्र.:</b> ${q["अ. क्र."]}<br><br>
     <b>कामाचे तपशील:</b> ${q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"]}<br><br>
     <b>कार्यवाहीचे स्वरूप:</b> ${q["कार्यवाहीचे स्वरूप"] || ""}<br><br>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;"> <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;"><b>गुण</b><br>${q["गुण"]}</div>
-    <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
-    <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;"><b>साध्य</b><br>${q["साध्य"]}</div>
-    <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;"><b>प्राप्त गुण</b><br>${q["प्राप्त %"]}</div>
-    <div style="flex:1;background:#91d7af;padding:8px;border-radius:6px;text-align:center;"><b>Percentage:</b><br>${q["Percentage"] || q["प्राप्त %"]}%<br><br> </div> </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;">
+      <div style="flex:1;background:#d0e1ff;padding:8px;border-radius:6px;text-align:center;"><b>गुण</b><br>${q["गुण"]}</div>
+      <div style="flex:1;background:#dff5d0;padding:8px;border-radius:6px;text-align:center;"><b>उद्दीष्ट</b><br>${q["उद्दीष्ट"]}</div>
+      <div style="flex:1;background:#fff1d0;padding:8px;border-radius:6px;text-align:center;"><b>साध्य</b><br>${q["साध्य"]}</div>
+      <div style="flex:1;background:#ffe0e0;padding:8px;border-radius:6px;text-align:center;"><b>प्राप्त गुण</b><br>${q["प्राप्त %"]}</div>
+      <div style="flex:1;background:#91d7af;padding:8px;border-radius:6px;text-align:center;"><b>Percentage</b><br>${q["Percentage"] || q["प्राप्त %"]}%</div>
+    </div>
+
     <div class="proofs">${imgHTML}</div>
+
+    <hr>
+
+    <b>आपले नाव:</b><br>
+    <input type="text" id="userName" style="width:100%;padding:8px;"><br><br>
+
+    <b>आपले उत्तर / Reply:</b><br>
+    <textarea id="replyText" rows="4" style="width:100%;padding:8px;"></textarea><br><br>
+
+    <button onclick="submitReply()">Submit Reply</button>
+    <p id="replyMsg" style="color:green;font-weight:bold;"></p>
   </div>`;
+}
+
+function submitReply(){
+  const q = questions[current];
+  const name = document.getElementById("userName").value;
+  const reply = document.getElementById("replyText").value;
+
+  if(name.trim()=="" || reply.trim()==""){
+    alert("नाव आणि उत्तर दोन्ही भरा");
+    return;
+  }
+
+  fetch(postURL,{
+    method:"POST",
+    body:JSON.stringify({
+      serial:q["अ. क्र."],
+      question:q["अभियान कालावधी पर्यंत करावयाच्या कामाचे तपशील"],
+      name:name,
+      reply:reply
+    })
+  })
+  .then(r=>r.text())
+  .then(d=>{
+    document.getElementById("replyMsg").innerText="Reply सेव्ह झाला ✔";
+    document.getElementById("userName").value="";
+    document.getElementById("replyText").value="";
+  })
+  .catch(e=>{
+    alert("Server Error आला");
+  });
 }
 
 function highlightActive(){
@@ -204,37 +233,17 @@ function prevPhoto(){
 Papa.parse(sheetURL,{
   download:true,
   header:true,
-  complete: r=>{
+  complete:r=>{
     questions = r.data.filter(q=>q["अ. क्र."]);
-    if(!questions.length){
-      questionArea.innerHTML = "❌ Sheet मध्ये डेटा नाही";
-      return;
-    }
     renderNav();
     showQuestion(0);
     highlightActive();
-  },
-  error: err=>{
-    questionArea.innerHTML = "❌ CSV Load Error";
-    console.error(err);
   }
 });
 
-/* NAV BUTTONS */
-nextBtn.onclick = ()=>{
-  if(current < questions.length-1){
-    current++;
-    showQuestion(current);
-    highlightActive();
-  }
-};
-prevBtn.onclick = ()=>{
-  if(current > 0){
-    current--;
-    showQuestion(current);
-    highlightActive();
-  }
-};
+/* NAV */
+nextBtn.onclick = ()=>{ if(current < questions.length-1){ current++; showQuestion(current); highlightActive(); }};
+prevBtn.onclick = ()=>{ if(current > 0){ current--; showQuestion(current); highlightActive(); }};
 </script>
 
 </body>
